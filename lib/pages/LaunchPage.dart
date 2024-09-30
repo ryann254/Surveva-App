@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LaunchScreen extends StatefulWidget {
-  const LaunchScreen({super.key});
+class LaunchPage extends StatefulWidget {
+  const LaunchPage({super.key});
 
   @override
-  State<LaunchScreen> createState() => _LaunchScreenState();
+  State<LaunchPage> createState() => _LaunchPageState();
 }
 
-class _LaunchScreenState extends State<LaunchScreen> {
+class _LaunchPageState extends State<LaunchPage> {
   double _pageOpacity = 0.0;
 
   @override
@@ -24,6 +24,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffF6F3EE),
       body: SafeArea(
         child: AnimatedOpacity(
           opacity: _pageOpacity,
@@ -41,20 +42,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'surveva',
-                              style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 1.4),
-                            ),
-                            const SizedBox(
-                              width: 5.0,
-                            ),
-                            SvgPicture.asset(
-                                'assets/icons/surveva_logo_small.svg',
-                                width: 28,
-                                height: 46)
+                            SvgPicture.asset('assets/launch page/surveva_logo_launchpage.svg')
                           ],
                         ),
                         const SizedBox(height: 40),
@@ -64,7 +52,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
                               Opacity(
                                 opacity: 0.4,
                                 child: SvgPicture.asset(
-                                  'assets/landing page/splash_screen_background.svg',
+                                  'assets/launch page/splash_screen_background.svg',
                                   width: double.infinity,
                                   height: 500,
                                 ),
@@ -76,7 +64,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
                                 child: Text(
                                   'Create surveys. Share opinions.',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w600, fontSize: 18),
+                                      fontWeight: FontWeight.w600, fontSize: 18, color: Color(0xff090A0A)),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -87,7 +75,9 @@ class _LaunchScreenState extends State<LaunchScreen> {
                                 child: Text(
                                   'Get instant analytics',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w600, fontSize: 18),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Color(0xff090A0A)),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -121,7 +111,8 @@ class _LaunchScreenState extends State<LaunchScreen> {
                                   children: [
                                     Text(
                                       'Have an account?',
-                                      style: TextStyle(fontSize: 14),
+                                      style: TextStyle(
+                                          fontSize: 14, color: Color(0xff090A0A)),
                                       textAlign: TextAlign.center,
                                     ),
                                     SizedBox(
@@ -132,7 +123,8 @@ class _LaunchScreenState extends State<LaunchScreen> {
                                       style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
-                                          decoration: TextDecoration.underline),
+                                          decoration: TextDecoration.underline,
+                                          color: Color(0xff090A0A)),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
