@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:surveva_app/pages/SplashScreen.dart';
+import 'package:surveva_app/pages/LaunchScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen()
+      home: const LaunchScreen()
     );
   }
 }
