@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:surveva_app/pages/LoginPage.dart';
 import 'package:surveva_app/pages/SignUpPage.dart';
 
 class LaunchPage extends StatefulWidget {
@@ -108,30 +109,35 @@ class _LaunchPageState extends State<LaunchPage> {
                                   ),
                                 ),
                               ),
-                              const Positioned(
+                              Positioned(
                                 bottom: 35,
                                 left: 0,
                                 right: 0,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Have an account?',
                                       style: TextStyle(
                                           fontSize: 14, color: Color(0xff090A0A)),
                                       textAlign: TextAlign.center,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5.0,
                                     ),
-                                    Text(
-                                      'Log In',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          decoration: TextDecoration.underline,
-                                          color: Color(0xff090A0A)),
-                                      textAlign: TextAlign.center,
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
+                                      },
+                                      child: const Text(
+                                        'Log In',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            decoration: TextDecoration.underline,
+                                            color: Color(0xff090A0A)),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ],
                                 ),

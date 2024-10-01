@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/pages/LoginPage.dart';
+import 'package:surveva_app/widgets/authWidgets.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -9,16 +11,16 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  String _gender = '';
+  String gender = '';
   bool _privacyPolicyAndTerms = false;
   bool _promotionalEmails = false;
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
 
   @override
   void initState() {
     super.initState();
-    _gender = 'Male';
+    gender = 'Male';
   }
 
   @override
@@ -40,224 +42,17 @@ class _SignUpPageState extends State<SignUpPage> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 17),
-                    SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
-                          hintText: 'Name',
-                          hintStyle: TextStyle(
-                            color: const Color(0xff979C9E).withOpacity(0.8),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    const Color(0xff979C9E).withOpacity(0.4)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Color(0xff090A0A)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                        ),
-                      ),
-                    ),
+                    nameWidget(),
                     const SizedBox(height: 15),
-                    SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
-                          hintText: 'Date of Birth',
-                          hintStyle: TextStyle(
-                            color: const Color(0xff979C9E).withOpacity(0.8),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    const Color(0xff979C9E).withOpacity(0.4)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Color(0xff090A0A)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                        ),
-                      ),
-                    ),
+                    dobWidget(),
                     const SizedBox(height: 15),
-                    SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
-                          hintText: 'E-Mail',
-                          hintStyle: TextStyle(
-                            color: const Color(0xff979C9E).withOpacity(0.8),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    const Color(0xff979C9E).withOpacity(0.4)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Color(0xff090A0A)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                        ),
-                      ),
-                    ),
+                    emailWidget(),
                     const SizedBox(height: 15),
-                    SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: TextField(
-                        obscureText: _obscurePassword,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
-                          hintText: 'Password',
-                          hintStyle: TextStyle(
-                            color: const Color(0xff979C9E).withOpacity(0.8),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    const Color(0xff979C9E).withOpacity(0.4)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Color(0xff090A0A)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          suffixIcon: IconButton(onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          }, icon: _obscurePassword ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility))
-                        ),
-                      ),
-                    ),
+                    passwordWidget(obscurePassword, setState),
                     const SizedBox(height: 15),
-                    SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: TextField(
-                        obscureText: _obscureConfirmPassword,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
-                          hintText: 'Confirm Password',
-                          hintStyle: TextStyle(
-                            color: const Color(0xff979C9E).withOpacity(0.8),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    const Color(0xff979C9E).withOpacity(0.4)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Color(0xff090A0A)),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          suffixIcon: IconButton(onPressed: () {
-                            setState(() {
-                              _obscureConfirmPassword = !_obscureConfirmPassword;
-                            });
-                          }, icon: _obscureConfirmPassword ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility))
-                        ),
-                      ),
-                    ),
+                    confirmPasswordWidget(obscureConfirmPassword, setState),
                     const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _gender = 'Male';
-                              });
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: _gender == 'Male'
-                                    ? const Color(0xff317C7D)
-                                    : Colors.white,
-                                border: _gender == 'Male'
-                                    ? Border.all(color: const Color(0xff317C7D))
-                                    : Border.all(
-                                        color: const Color(0xff979C9E)
-                                            .withOpacity(0.4)),
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(24),
-                                    bottomLeft: Radius.circular(24)),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Male',
-                                  style: TextStyle(
-                                      color: _gender == 'Male'
-                                          ? Colors.white
-                                          : const Color(0xff979C9E)
-                                              .withOpacity(0.8)),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _gender = 'Female';
-                              });
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: _gender == 'Female'
-                                    ? const Color(0xff317C7D)
-                                    : Colors.white,
-                                border: _gender == 'Female'
-                                    ? Border.all(color: const Color(0xff317C7D))
-                                    : Border.all(
-                                        color: const Color(0xff979C9E)
-                                            .withOpacity(0.4)),
-                                borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(24),
-                                    bottomRight: Radius.circular(24)),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Female',
-                                  style: TextStyle(
-                                      color: _gender == 'Female'
-                                          ? Colors.white
-                                          : const Color(0xff979C9E)
-                                              .withOpacity(0.8)),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                    genderWidget(gender, setState),
                     const SizedBox(
                       height: 12,
                     ),
@@ -362,25 +157,30 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
               const SizedBox(height: 18),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Already have an account?',
                     style: TextStyle(fontSize: 14, color: Color(0xff090A0A)),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5.0,
                   ),
-                  Text(
-                    'Log In',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        decoration: TextDecoration.underline,
-                        color: Color(0xff090A0A)),
-                    textAlign: TextAlign.center,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                    },
+                    child: const Text(
+                      'Log In',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline,
+                          color: Color(0xff090A0A)),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ],
               ),
@@ -391,4 +191,5 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
 }
