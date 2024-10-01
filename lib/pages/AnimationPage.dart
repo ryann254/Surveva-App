@@ -14,13 +14,13 @@ class _AnimationPageState extends State<AnimationPage> with SingleTickerProvider
   late AnimationController _controller;
   late Animation<double> _firstLogoOpacity;
   late Animation<double> _secondLogoOpacity;
-  final _loginState = true;
+  final _loginState = false;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 6),
+      duration: const Duration(seconds: 4),
       vsync: this,
     );
     

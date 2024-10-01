@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:surveva_app/pages/SignUpPage.dart';
 
 class LaunchPage extends StatefulWidget {
   const LaunchPage({super.key});
@@ -85,21 +86,26 @@ class _LaunchPageState extends State<LaunchPage> {
                                 bottom: 80,
                                 left: 16,
                                 right: 16,
-                                child: Container(
-                                  height: 46,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff317C7D),
-                                    borderRadius: BorderRadius.circular(24),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpPage()));
+                                  },
+                                  child: Container(
+                                    height: 46,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff317C7D),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    child: const Center(
+                                        child: Text(
+                                      'Create Account',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                   ),
-                                  child: const Center(
-                                      child: Text(
-                                    'Create',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
-                                  )),
                                 ),
                               ),
                               const Positioned(
