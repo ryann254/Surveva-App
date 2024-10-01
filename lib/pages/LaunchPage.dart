@@ -16,7 +16,7 @@ class _LaunchPageState extends State<LaunchPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 700), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         _pageOpacity = 1.0;
       });
@@ -30,7 +30,7 @@ class _LaunchPageState extends State<LaunchPage> {
       body: SafeArea(
         child: AnimatedOpacity(
           opacity: _pageOpacity,
-          duration: const Duration(seconds: 2),
+          duration: const Duration(milliseconds: 1500),
           curve: Curves.easeIn,
           child: LayoutBuilder( // The LayoutBuilder is used to get the constraints of the screen
             builder: (context, constraints) {

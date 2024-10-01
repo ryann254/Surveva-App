@@ -23,6 +23,24 @@ class _SignUpPageState extends State<SignUpPage> {
     gender = 'Male';
   }
 
+  isObscurePassword() {
+    setState(() {
+      obscurePassword = !obscurePassword;
+    });
+  }
+
+  isObscureConfirmPassword() {
+    setState(() {
+      obscureConfirmPassword = !obscureConfirmPassword;
+    });
+  }
+
+  isGender(String newGender) {
+    setState(() {
+      gender = newGender;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,11 +66,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     const SizedBox(height: 15),
                     emailWidget(),
                     const SizedBox(height: 15),
-                    passwordWidget(obscurePassword, setState),
+                    passwordWidget(obscurePassword, isObscurePassword),
                     const SizedBox(height: 15),
-                    confirmPasswordWidget(obscureConfirmPassword, setState),
+                    confirmPasswordWidget(obscureConfirmPassword, isObscureConfirmPassword),
                     const SizedBox(height: 15),
-                    genderWidget(gender, setState),
+                    genderWidget(gender, isGender),
                     const SizedBox(
                       height: 12,
                     ),
