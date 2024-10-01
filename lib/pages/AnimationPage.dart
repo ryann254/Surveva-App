@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:surveva_app/pages/HomePage.dart';
+import 'package:surveva_app/pages/LaunchPage.dart';
 
 class AnimationPage extends StatefulWidget {
   const AnimationPage({super.key});
@@ -13,15 +14,17 @@ class _AnimationPageState extends State<AnimationPage> with SingleTickerProvider
   late AnimationController _controller;
   late Animation<double> _firstLogoOpacity;
   late Animation<double> _secondLogoOpacity;
+  final _loginState = true;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 6), // Increased duration
+      duration: const Duration(seconds: 6),
       vsync: this,
     );
-
+    
+    // Animate the logos to appear one after the other.
     _firstLogoOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -36,10 +39,11 @@ class _AnimationPageState extends State<AnimationPage> with SingleTickerProvider
       ),
     );
 
+    // After the animation is done, navigate to the home page or launch page.
     _controller.forward().then((_) {
       Future.delayed(const Duration(milliseconds: 500), () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => _loginState ? const HomePage() : const LaunchPage()),
         );
       });
     });

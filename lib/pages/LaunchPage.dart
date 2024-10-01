@@ -30,10 +30,10 @@ class _LaunchPageState extends State<LaunchPage> {
           opacity: _pageOpacity,
           duration: const Duration(seconds: 2),
           curve: Curves.easeIn,
-          child: LayoutBuilder(
+          child: LayoutBuilder( // The LayoutBuilder is used to get the constraints of the screen
             builder: (context, constraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
+              return SingleChildScrollView( // The SingleChildScrollView is used to scroll the page if the content is too big for the screen
+                child: ConstrainedBox( // The ConstrainedBox is used to set the minimum height to the screen
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
                   child: IntrinsicHeight(
                     child: Column(
