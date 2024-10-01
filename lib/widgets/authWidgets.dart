@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 
 // Sign Up Page Widgets
@@ -157,25 +158,66 @@ SizedBox confirmPasswordWidget(
   );
 }
 
-SizedBox dobWidget() {
+SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
   return SizedBox(
     height: 50,
     width: double.infinity,
-    child: TextField(
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
-        hintText: 'Date of Birth',
-        hintStyle: TextStyle(
-          color: const Color(0xff979C9E).withOpacity(0.8),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
+    child: GestureDetector(
+      onTap: () async {
+        final date = await showDatePickerDialog(
+          context: context,
+          initialDate: DateTime.now(),
+          minDate: DateTime(1950),
+          maxDate: DateTime.now(),
+          daysOfTheWeekTextStyle: const TextStyle(
+            color: Color(0xff090A0A),
+            fontSize: 14,
+            fontWeight: FontWeight.w500
+          ),
+          leadingDateTextStyle: const TextStyle(
+            color: Color(0xff090A0A),
+            fontSize: 14,
+            fontWeight: FontWeight.w500
+          ),
+          enabledCellsTextStyle: const TextStyle(
+            color: Color(0xff090A0A),
+            fontSize: 14,
+            fontWeight: FontWeight.w500
+          ),
+          currentDateTextStyle: const TextStyle(
+            color: Color(0xff090A0A),
+            fontSize: 14,
+            fontWeight: FontWeight.w500
+          ),
+          disabledCellsTextStyle: TextStyle(
+            color: const Color(0xff090A0A).withOpacity(0.4),
+            fontSize: 14,
+            fontWeight: FontWeight.w500
+          ),
+        );
+
+        if (date != null) {
+          isDob(date.toString());
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xff979C9E).withOpacity(0.4)),
           borderRadius: BorderRadius.circular(24),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xff090A0A)),
-          borderRadius: BorderRadius.circular(24),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              dob.isNotEmpty ? dob.substring(0, 10) : 'Date of Birth',
+              style: TextStyle(
+                fontSize: 15,
+                color: const Color(0xff979C9E).withOpacity(0.8),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
         ),
       ),
     ),

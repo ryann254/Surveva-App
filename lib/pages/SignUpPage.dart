@@ -12,6 +12,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   String gender = '';
+  String dob = '';
   bool _privacyPolicyAndTerms = false;
   bool _promotionalEmails = false;
   bool obscurePassword = true;
@@ -41,6 +42,12 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
+  isDob(String newDob) {
+    setState(() {
+      dob = newDob;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     const SizedBox(height: 17),
                     nameWidget(),
                     const SizedBox(height: 15),
-                    dobWidget(),
+                    dobWidget(context, isDob, dob),
                     const SizedBox(height: 15),
                     emailWidget(),
                     const SizedBox(height: 15),

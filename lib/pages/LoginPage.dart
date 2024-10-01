@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/pages/HomePage.dart';
 import 'package:surveva_app/pages/SignUpPage.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
 
@@ -44,22 +45,27 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 15),
                         passwordWidget(obscurePassword, isObscurePassword),
                         const SizedBox(height: 18),
-                        Container(
-                            width: double.infinity,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff317C7D),
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'Log In',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+                          },
+                          child: Container(
+                              width: double.infinity,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff317C7D),
+                                borderRadius: BorderRadius.circular(24),
                               ),
-                            )),
+                              child: const Center(
+                                child: Text(
+                                  'Log In',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              )),
+                        ),
                         const SizedBox(height: 18),
                         const Text('Forgot Password?',
                             style: TextStyle(
