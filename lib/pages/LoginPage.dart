@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/pages/ForgotPasswordPage.dart';
 import 'package:surveva_app/pages/HomePage.dart';
 import 'package:surveva_app/pages/SignUpPage.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
@@ -67,11 +68,16 @@ class _LoginPageState extends State<LoginPage> {
                               )),
                         ),
                         const SizedBox(height: 18),
-                        const Text('Forgot Password?',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordPage()));
+                          },
+                          child: const Text('Forgot Password?',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500)),
+                        ),
                         const SizedBox(height: 48),
                         Container(
                           height: 1,

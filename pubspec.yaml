@@ -65,6 +65,7 @@ flutter:
     - assets/launch page/
     - assets/homepage/
     - assets/auth/
+    - assets/forgot password/
     - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see

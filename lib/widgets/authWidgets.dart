@@ -14,6 +14,8 @@ SizedBox passwordWidget(bool obscurePassword, Function isObscurePassword) {
           hintStyle: TextStyle(
             color: const Color(0xff979C9E).withOpacity(0.8),
           ),
+          filled: true,
+          fillColor: const Color(0xffF7F9FA),
           enabledBorder: OutlineInputBorder(
             borderSide:
                 BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
@@ -34,17 +36,22 @@ SizedBox passwordWidget(bool obscurePassword, Function isObscurePassword) {
   );
 }
 
-SizedBox emailWidget() {
+SizedBox emailWidget({Function? validateEmail}) {
   return SizedBox(
     height: 50,
     width: double.infinity,
     child: TextField(
+      onChanged: (value) {
+        validateEmail?.call();
+      },
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
         hintText: 'E-Mail',
         hintStyle: TextStyle(
           color: const Color(0xff979C9E).withOpacity(0.8),
         ),
+        filled: true,
+        fillColor: const Color(0xffF7F9FA),
         enabledBorder: OutlineInputBorder(
           borderSide:
               BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
@@ -138,6 +145,8 @@ SizedBox confirmPasswordWidget(
           hintStyle: TextStyle(
             color: const Color(0xff979C9E).withOpacity(0.8),
           ),
+          filled: true,
+          fillColor: const Color(0xffF7F9FA),
           enabledBorder: OutlineInputBorder(
             borderSide:
                 BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
@@ -170,30 +179,25 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
           minDate: DateTime(1950),
           maxDate: DateTime.now(),
           daysOfTheWeekTextStyle: const TextStyle(
-            color: Color(0xff090A0A),
-            fontSize: 14,
-            fontWeight: FontWeight.w500
-          ),
+              color: Color(0xff090A0A),
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
           leadingDateTextStyle: const TextStyle(
-            color: Color(0xff090A0A),
-            fontSize: 14,
-            fontWeight: FontWeight.w500
-          ),
+              color: Color(0xff090A0A),
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
           enabledCellsTextStyle: const TextStyle(
-            color: Color(0xff090A0A),
-            fontSize: 14,
-            fontWeight: FontWeight.w500
-          ),
+              color: Color(0xff090A0A),
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
           currentDateTextStyle: const TextStyle(
-            color: Color(0xff090A0A),
-            fontSize: 14,
-            fontWeight: FontWeight.w500
-          ),
+              color: Color(0xff090A0A),
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
           disabledCellsTextStyle: TextStyle(
-            color: const Color(0xff090A0A).withOpacity(0.4),
-            fontSize: 14,
-            fontWeight: FontWeight.w500
-          ),
+              color: const Color(0xff090A0A).withOpacity(0.4),
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
         );
 
         if (date != null) {
@@ -204,6 +208,7 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
         decoration: BoxDecoration(
           border: Border.all(color: const Color(0xff979C9E).withOpacity(0.4)),
           borderRadius: BorderRadius.circular(24),
+          color: const Color(0xffF7F9FA),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -235,6 +240,8 @@ SizedBox nameWidget() {
         hintStyle: TextStyle(
           color: const Color(0xff979C9E).withOpacity(0.8),
         ),
+        filled: true,
+        fillColor: const Color(0xffF7F9FA),
         enabledBorder: OutlineInputBorder(
           borderSide:
               BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
