@@ -30,7 +30,7 @@ class _LaunchPageState extends State<LaunchPage> {
       body: SafeArea(
         child: AnimatedOpacity(
           opacity: _pageOpacity,
-          duration: const Duration(milliseconds: 1500),
+          duration: const Duration(milliseconds: 1000),
           curve: Curves.easeIn,
           child: LayoutBuilder( // The LayoutBuilder is used to get the constraints of the screen
             builder: (context, constraints) {

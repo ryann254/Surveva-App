@@ -64,7 +64,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/launch page/
-    - assets/homepage/
+    - assets/discovery/
     - assets/auth/
     - assets/forgot password/
     - assets/icons/

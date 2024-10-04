@@ -20,7 +20,7 @@ class _AnimationPageState extends State<AnimationPage> with SingleTickerProvider
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 4),
+      duration: const Duration(milliseconds: 3500),
       vsync: this,
     );
     
@@ -69,7 +69,7 @@ class _AnimationPageState extends State<AnimationPage> with SingleTickerProvider
                 builder: (context, child) {
                   return Opacity(
                     opacity: _firstLogoOpacity.value * (1 - _secondLogoOpacity.value),
-                    child: SvgPicture.asset('assets/homepage/main_logo_homepage.svg'),
+                    child: SvgPicture.asset('assets/launch page/main_logo_homepage.svg'),
                   );
                 },
               ),
@@ -78,7 +78,7 @@ class _AnimationPageState extends State<AnimationPage> with SingleTickerProvider
                 builder: (context, child) {
                   return Opacity(
                     opacity: _secondLogoOpacity.value,
-                    child: SvgPicture.asset('assets/homepage/surveva_logo_homepage.svg'),
+                    child: SvgPicture.asset('assets/launch page/surveva_logo_homepage.svg'),
                   );
                 },
               ),
