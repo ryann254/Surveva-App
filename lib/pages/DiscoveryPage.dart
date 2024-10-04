@@ -11,12 +11,7 @@ class DiscoveryPage extends StatefulWidget {
 class _DiscoveryPageState extends State<DiscoveryPage> {
   bool isTyping = false;
   String navigation = 'discovery';
-
-  setNavigation(String newNavigation) {
-    setState(() {
-      navigation = newNavigation;
-    });
-  }
+  late TextEditingController _searchController;
 
   // TODO: get questions from API
   List<String> questions = [
@@ -27,7 +22,21 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
     'How many hours do you spend on social media per day?',
     'Will electric cars ever replace gas-powered vehicles?',
     'Do you agree with Biden\'s policies?'
-    ];
+  ];
+  List<String> filteredQuestions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredQuestions = List.from(questions);
+    _searchController = TextEditingController();
+  }
+
+    setNavigation(String newNavigation) {
+    setState(() {
+      navigation = newNavigation;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,30 +51,29 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                 const SizedBox(
                   height: 12,
                 ),
-                searchWidget(),
+                searchWidget(questions),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: questions.length,
+                    itemCount: filteredQuestions.length,
                     itemBuilder: (context, index) {
-return Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.only(
-                          top: 34, bottom: 34, left: 24, right: 24),
-                      margin: const EdgeInsets.only(top: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffF6F3EE),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Text(
-                        questions[index],
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff090A0A)),
-                      ),
-                    );
+                      return Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(
+                            top: 34, bottom: 34, left: 24, right: 24),
+                        margin: const EdgeInsets.only(top: 8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xffF6F3EE),
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: Text(
+                          filteredQuestions[index],
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff090A0A)),
+                        ),
+                      );
                     },
-                    
                   ),
                 )
               ],
@@ -120,13 +128,14 @@ return Container(
                             : const Color(0xff317C7D),
                       ),
                       const SizedBox(width: 5),
-                      if (navigation == 'discovery') const Text(
-                        'Discovery',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      )
+                      if (navigation == 'discovery')
+                        const Text(
+                          'Discovery',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        )
                     ],
                   )),
             ),
@@ -149,17 +158,19 @@ return Container(
                       height: navigation == 'create' ? 20 : 24,
                       width: navigation == 'create' ? 20 : 24,
                       colorFilter: navigation == 'create'
-                          ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                          ? const ColorFilter.mode(
+                              Colors.white, BlendMode.srcIn)
                           : null,
                     ),
                     const SizedBox(width: 5),
-                    if (navigation == 'create') const Text(
-                      'Create',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    )
+                    if (navigation == 'create')
+                      const Text(
+                        'Create',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      )
                   ],
                 ),
               ),
@@ -183,17 +194,19 @@ return Container(
                       height: navigation == 'profile' ? 20 : 24,
                       width: navigation == 'profile' ? 20 : 24,
                       colorFilter: navigation == 'profile'
-                          ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                          ? const ColorFilter.mode(
+                              Colors.white, BlendMode.srcIn)
                           : null,
                     ),
                     const SizedBox(width: 5),
-                    if (navigation == 'profile') const Text(
-                      'Profile',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    )
+                    if (navigation == 'profile')
+                      const Text(
+                        'Profile',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      )
                   ],
                 ),
               ),
@@ -204,16 +217,18 @@ return Container(
     );
   }
 
-  Row searchWidget() {
+  Row searchWidget(List<String> questions) {
     return Row(
       children: [
         Expanded(
           child: SizedBox(
             height: 44,
             child: TextField(
+              controller: _searchController,
               onChanged: (value) {
                 setState(() {
                   isTyping = value.isNotEmpty;
+                  filteredQuestions = questions.where((question) => question.toLowerCase().contains(value.toLowerCase())).toList();
                 });
               },
               decoration: InputDecoration(
@@ -246,6 +261,8 @@ return Container(
             onTap: () {
               setState(() {
                 isTyping = false;
+                _searchController.clear();
+                filteredQuestions = questions;
               });
             },
             child: const Text(
