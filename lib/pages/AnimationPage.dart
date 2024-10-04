@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:surveva_app/pages/HomePage.dart';
+import 'package:surveva_app/pages/DiscoveryPage.dart';
 import 'package:surveva_app/pages/LaunchPage.dart';
 
 class AnimationPage extends StatefulWidget {
@@ -43,7 +43,7 @@ class _AnimationPageState extends State<AnimationPage> with SingleTickerProvider
     _controller.forward().then((_) {
       Future.delayed(const Duration(milliseconds: 500), () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => _loginState ? const HomePage() : const LaunchPage()),
+          MaterialPageRoute(builder: (context) => _loginState ? const DiscoveryPage() : const LaunchPage()),
         );
       });
     });

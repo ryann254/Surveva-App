@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/pages/LoginPage.dart';
+import 'package:surveva_app/pages/PersonalizationPage.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -136,22 +137,27 @@ class _SignUpPageState extends State<SignUpPage> {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff317C7D),
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Continue',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const PersonalizationPage()));
+                      },
+                      child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff317C7D),
+                            borderRadius: BorderRadius.circular(24),
                           ),
-                        ))
+                          child: const Center(
+                            child: Text(
+                              'Continue',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          )),
+                    )
                   ],
                 ),
               ),

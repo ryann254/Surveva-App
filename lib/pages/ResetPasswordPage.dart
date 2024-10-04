@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/pages/LoginPage.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
 
 class ResetPasswordPage extends StatefulWidget {
@@ -136,7 +137,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
             },
             child: Container(
               width: double.infinity,

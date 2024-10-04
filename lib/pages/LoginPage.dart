@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/pages/ForgotPasswordPage.dart';
-import 'package:surveva_app/pages/HomePage.dart';
+import 'package:surveva_app/pages/DiscoveryPage.dart';
 import 'package:surveva_app/pages/SignUpPage.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
 
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 18),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DiscoveryPage()));
                           },
                           child: Container(
                               width: double.infinity,
