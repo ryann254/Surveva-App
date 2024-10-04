@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:surveva_app/pages/CreatePollPage.dart';
+import 'package:surveva_app/pages/ProfilePage.dart';
+import 'package:surveva_app/widgets/discoveryWidgets.dart';
 
 class DiscoveryPage extends StatefulWidget {
   const DiscoveryPage({super.key});
@@ -32,10 +34,12 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
     _searchController = TextEditingController();
   }
 
-    setNavigation(String newNavigation) {
-    setState(() {
-      navigation = newNavigation;
-    });
+  setNavigation(String newNavigation) {
+    if (newNavigation == 'create') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const CreatePollPage()));
+    } else {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+    }
   }
 
   @override
@@ -85,137 +89,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
     );
   }
 
-  Positioned bottomNavigationWidget(String navigation, Function setNavigation) {
-    return Positioned(
-      left: 16,
-      right: 16,
-      bottom: 16,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-              onTap: () {
-                setNavigation('discovery');
-              },
-              child: Container(
-                  decoration: BoxDecoration(
-                    color: navigation == 'discovery'
-                        ? const Color(0xff317C7D)
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  padding: const EdgeInsets.all(14),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.search_sharp,
-                        size: navigation == 'discovery' ? 20 : 24,
-                        color: navigation == 'discovery'
-                            ? Colors.white
-                            : const Color(0xff317C7D),
-                      ),
-                      const SizedBox(width: 5),
-                      if (navigation == 'discovery')
-                        const Text(
-                          'Discovery',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white),
-                        )
-                    ],
-                  )),
-            ),
-            GestureDetector(
-              onTap: () {
-                setNavigation('create');
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: navigation == 'create'
-                      ? const Color(0xff317C7D)
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                padding: const EdgeInsets.all(14),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/discovery/create.svg',
-                      height: navigation == 'create' ? 20 : 24,
-                      width: navigation == 'create' ? 20 : 24,
-                      colorFilter: navigation == 'create'
-                          ? const ColorFilter.mode(
-                              Colors.white, BlendMode.srcIn)
-                          : null,
-                    ),
-                    const SizedBox(width: 5),
-                    if (navigation == 'create')
-                      const Text(
-                        'Create',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      )
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                setNavigation('profile');
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: navigation == 'profile'
-                      ? const Color(0xff317C7D)
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                padding: const EdgeInsets.all(14),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/discovery/profile.svg',
-                      height: navigation == 'profile' ? 20 : 24,
-                      width: navigation == 'profile' ? 20 : 24,
-                      colorFilter: navigation == 'profile'
-                          ? const ColorFilter.mode(
-                              Colors.white, BlendMode.srcIn)
-                          : null,
-                    ),
-                    const SizedBox(width: 5),
-                    if (navigation == 'profile')
-                      const Text(
-                        'Profile',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      )
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Row searchWidget(List<String> questions) {
     return Row(
@@ -228,7 +102,10 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
               onChanged: (value) {
                 setState(() {
                   isTyping = value.isNotEmpty;
-                  filteredQuestions = questions.where((question) => question.toLowerCase().contains(value.toLowerCase())).toList();
+                  filteredQuestions = questions
+                      .where((question) =>
+                          question.toLowerCase().contains(value.toLowerCase()))
+                      .toList();
                 });
               },
               decoration: InputDecoration(
