@@ -64,10 +64,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 ),
               ),
               const SizedBox(height: 36.0),
-              passwordWidget(obscurePassword, isObscurePassword),
+              passwordWidget(obscurePassword, isObscurePassword, context),
               const SizedBox(height: 18.0),
               confirmPasswordWidget(
-                  obscureConfirmPassword, isObscureConfirmPassword),
+                  obscureConfirmPassword, isObscureConfirmPassword, context),
               const SizedBox(height: 18.0),
               GestureDetector(
                 onTap: () {
@@ -88,14 +88,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     width: double.infinity,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: const Color(0xff317C7D),
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(24),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         'Continue',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
                       ),
@@ -137,20 +137,21 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
             },
             child: Container(
               width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
-                color: const Color(0xff317C7D),
+                color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(24),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   'Done',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),

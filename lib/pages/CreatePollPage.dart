@@ -34,7 +34,7 @@ class _CreatePollPageState extends State<CreatePollPage> {
           child: Column(
             children: [
               const Text('Create a poll'),
-              bottomNavigationWidget(navigation, setNavigation)
+              bottomNavigationWidget(navigation, setNavigation, context)
             ],
           ),
         )

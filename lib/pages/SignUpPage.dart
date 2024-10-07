@@ -68,17 +68,18 @@ class _SignUpPageState extends State<SignUpPage> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 17),
-                    nameWidget(),
+                    nameWidget(context),
                     const SizedBox(height: 15),
                     dobWidget(context, isDob, dob),
                     const SizedBox(height: 15),
-                    emailWidget(),
+                    emailWidget(context: context),
                     const SizedBox(height: 15),
-                    passwordWidget(obscurePassword, isObscurePassword),
+                    passwordWidget(obscurePassword, isObscurePassword, context),
                     const SizedBox(height: 15),
-                    confirmPasswordWidget(obscureConfirmPassword, isObscureConfirmPassword),
+                    confirmPasswordWidget(
+                        obscureConfirmPassword, isObscureConfirmPassword, context),
                     const SizedBox(height: 15),
-                    genderWidget(gender, isGender),
+                    genderWidget(gender, isGender, context),
                     const SizedBox(
                       height: 12,
                     ),
@@ -93,23 +94,25 @@ class _SignUpPageState extends State<SignUpPage> {
                             }),
                         Expanded(
                           child: RichText(
-                            text: const TextSpan(
+                            text: TextSpan(
                               style: TextStyle(
-                                  fontSize: 14, color: Color(0xff090A0A)),
+                                  fontSize: 14,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
                               children: [
-                                TextSpan(text: 'I accept the '),
+                                const TextSpan(text: 'I accept the '),
                                 TextSpan(
                                   text: 'Privacy Policy',
                                   style: TextStyle(
-                                    color: Color(0xff317C7D),
+                                    color: Theme.of(context).primaryColor,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                TextSpan(text: ' and '),
+                                const TextSpan(text: ' and '),
                                 TextSpan(
                                   text: 'Terms',
                                   style: TextStyle(
-                                    color: Color(0xff317C7D),
+                                    color: Theme.of(context).primaryColor,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
@@ -131,28 +134,32 @@ class _SignUpPageState extends State<SignUpPage> {
                         const Expanded(
                             child: Text(
                           'I agree to receive informational and promotional materials',
-                          style:
-                              TextStyle(fontSize: 14, color: Color(0xff090A0A)),
+                          style: TextStyle(fontSize: 14),
                         ))
                       ],
                     ),
                     const SizedBox(height: 14),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const PersonalizationPage()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const PersonalizationPage()));
                       },
                       child: Container(
                           width: double.infinity,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: const Color(0xff317C7D),
+                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(24),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               'Continue',
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -167,14 +174,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                        color: const Color(0xff979C9E).withOpacity(0.4)),
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? const Color(0xffE9E7E1)
+                            : const Color(0xff404446)),
                   ),
                 ),
               ),
               const SizedBox(height: 7),
               const Text(
                 'or',
-                style: TextStyle(color: const Color(0xff090A0A)),
               ),
               const SizedBox(height: 7),
               Row(
@@ -193,7 +201,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   const Text(
                     'Already have an account?',
-                    style: TextStyle(fontSize: 14, color: Color(0xff090A0A)),
+                    style: TextStyle(fontSize: 14),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -201,15 +209,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()));
                     },
                     child: const Text(
                       'Log In',
                       style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                          color: Color(0xff090A0A)),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -222,5 +233,4 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-
 }

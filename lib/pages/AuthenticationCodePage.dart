@@ -48,7 +48,8 @@ class _AuthenticationCodePageState extends State<AuthenticationCodePage> {
                   width: 300,
                   child: Text(
                     'Enter the 4-digit code sent to your email address',
-                    style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
+                    style:
+                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -56,6 +57,7 @@ class _AuthenticationCodePageState extends State<AuthenticationCodePage> {
                   height: 36,
                 ),
                 VerificationCode(
+                  fillColor: Theme.of(context).colorScheme.onPrimary,
                   textStyle: const TextStyle(fontSize: 20.0),
                   margin: const EdgeInsets.only(right: 14.0),
                   onCompleted: (value) {
@@ -64,7 +66,7 @@ class _AuthenticationCodePageState extends State<AuthenticationCodePage> {
                     });
                   },
                   onEditing: (value) {},
-                  cursorColor: const Color(0xff317C7D),
+                  cursorColor: Theme.of(context).primaryColor,
                   keyboardType: TextInputType.number,
                   length: 4,
                   fullBorder: true,
@@ -76,16 +78,15 @@ class _AuthenticationCodePageState extends State<AuthenticationCodePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const ResetPasswordPage()));
+                            builder: (context) => const ResetPasswordPage()));
                   },
                   child: Container(
                       width: double.infinity,
                       height: 50,
                       decoration: BoxDecoration(
                         color: _isCodeValid
-                            ? const Color(0xff317C7D)
-                            : const Color(0xffF2F4F5),
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).colorScheme.tertiary,
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Center(
@@ -93,8 +94,8 @@ class _AuthenticationCodePageState extends State<AuthenticationCodePage> {
                           'Continue',
                           style: TextStyle(
                               color: _isCodeValid
-                                  ? Colors.white
-                                  : const Color(0xff979C9E),
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.onTertiary,
                               fontSize: 16,
                               fontWeight: FontWeight.w600),
                         ),

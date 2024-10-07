@@ -64,19 +64,23 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 textAlign: TextAlign.center,
                               )),
                           const SizedBox(height: 36.0),
-                          emailWidget(validateEmail: validateEmail),
+                          emailWidget(validateEmail: validateEmail, context: context),
                           const SizedBox(height: 18.0),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthenticationCodePage()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AuthenticationCodePage()));
                             },
                             child: Container(
                                 width: double.infinity,
                                 height: 50,
                                 decoration: BoxDecoration(
                                   color: isEmailValid
-                                      ? const Color(0xff317C7D)
-                                      : const Color(0xffF2F4F5),
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).colorScheme.tertiary,
                                   borderRadius: BorderRadius.circular(24),
                                 ),
                                 child: Center(
@@ -84,8 +88,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     'Continue',
                                     style: TextStyle(
                                         color: isEmailValid
-                                            ? Colors.white
-                                            : const Color(0xff979C9E),
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onTertiary,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -99,8 +107,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             children: [
                               const Text(
                                 'Don\'t have an account?',
-                                style: TextStyle(
-                                    fontSize: 14, color: Color(0xff090A0A)),
+                                style: TextStyle(fontSize: 14),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(
@@ -117,10 +124,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 child: const Text(
                                   'Sign Up',
                                   style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      decoration: TextDecoration.underline,
-                                      color: Color(0xff317C7D)),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    decoration: TextDecoration.underline,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),

@@ -66,7 +66,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                             top: 34, bottom: 34, left: 24, right: 24),
                         margin: const EdgeInsets.only(top: 8),
                         decoration: BoxDecoration(
-                          color: const Color(0xffF6F3EE),
+                          color: Theme.of(context).colorScheme.onPrimary,
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: Text(
@@ -74,7 +74,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xff090A0A)),
+                              ),
                         ),
                       );
                     },
@@ -83,7 +83,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
               ],
             ),
           ),
-          bottomNavigationWidget(navigation, setNavigation)
+          bottomNavigationWidget(navigation, setNavigation, context)
         ],
       )),
     );
@@ -112,20 +112,12 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                   contentPadding: const EdgeInsets.only(
                       top: 3.0, left: 30.0, right: 30.0, bottom: 3.0),
                   hintText: 'Search',
-                  hintStyle: const TextStyle(color: Color(0xff979C9E)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    borderSide: const BorderSide(color: Color(0xff979C9E)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xff979C9E)),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.only(left: 13.0),
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.onTertiary),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(left: 13.0),
                     child: Icon(
                       Icons.search_sharp,
-                      color: Color(0xff979C9E),
+                      color: Theme.of(context).colorScheme.onTertiary,
                       size: 24,
                     ),
                   )),
@@ -147,7 +139,6 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: Color(0xff090A0A),
               ),
             ),
           ),

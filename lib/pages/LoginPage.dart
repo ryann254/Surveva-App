@@ -32,36 +32,46 @@ class _LoginPageState extends State<LoginPage> {
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+                    padding: const EdgeInsets.only(
+                        top: 16.0, left: 16.0, right: 16.0),
                     child: Column(
                       children: [
-                        SvgPicture.asset('assets/launch page/surveva_logo_launchpage.svg',
-                            width: 120, height: 30),
+                        SvgPicture.asset(
+                            'assets/launch page/surveva_logo_launchpage.svg',
+                            width: 120,
+                            height: 30),
                         const SizedBox(height: 92),
                         const Text('Log In',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w500),
                             textAlign: TextAlign.center),
                         const SizedBox(height: 48),
-                        emailWidget(),
+                        emailWidget(context: context),
                         const SizedBox(height: 15),
-                        passwordWidget(obscurePassword, isObscurePassword),
+                        passwordWidget(obscurePassword, isObscurePassword, context),
                         const SizedBox(height: 18),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DiscoveryPage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const DiscoveryPage()));
                           },
                           child: Container(
                               width: double.infinity,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: const Color(0xff317C7D),
+                                color: Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(24),
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
                                   'Log In',
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -70,13 +80,15 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 18),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordPage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordPage()));
                           },
                           child: const Text('Forgot Password?',
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500)),
+                                  fontSize: 14, fontWeight: FontWeight.w500)),
                         ),
                         const SizedBox(height: 48),
                         Container(
@@ -85,14 +97,16 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: BoxDecoration(
                             border: Border(
                               top: BorderSide(
-                                  color: const Color(0xff979C9E).withOpacity(0.4)),
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? const Color(0xffE9E7E1)
+                                      : const Color(0xff404446)),
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         const Text(
                           'or',
-                          style: TextStyle(color: Color(0xff090A0A)),
                         ),
                         const SizedBox(height: 10),
                         Row(
@@ -105,13 +119,15 @@ class _LoginPageState extends State<LoginPage> {
                             SvgPicture.asset('assets/auth/facebook.svg'),
                           ],
                         ),
-                        const Expanded(child: SizedBox()), // Replace Spacer with Expanded
+                        const Expanded(
+                            child: SizedBox()), // Replace Spacer with Expanded
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
                               'Don\'t have an account?',
-                              style: TextStyle(fontSize: 14, color: Color(0xff090A0A)),
+                              style: TextStyle(
+                                  fontSize: 14),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(
@@ -119,7 +135,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpPage()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignUpPage()));
                               },
                               child: const Text(
                                 'Sign Up',
@@ -127,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     decoration: TextDecoration.underline,
-                                    color: Color(0xff317C7D)),
+                                    ),
                                 textAlign: TextAlign.center,
                               ),
                             ),

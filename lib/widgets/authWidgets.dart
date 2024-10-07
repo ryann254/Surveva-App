@@ -2,7 +2,8 @@ import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 
 // Sign Up Page Widgets
-SizedBox passwordWidget(bool obscurePassword, Function isObscurePassword) {
+SizedBox passwordWidget(
+    bool obscurePassword, Function isObscurePassword, BuildContext context) {
   return SizedBox(
     height: 50,
     width: double.infinity,
@@ -12,18 +13,7 @@ SizedBox passwordWidget(bool obscurePassword, Function isObscurePassword) {
           contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
           hintText: 'Password',
           hintStyle: TextStyle(
-            color: const Color(0xff979C9E).withOpacity(0.8),
-          ),
-          filled: true,
-          fillColor: const Color(0xffF7F9FA),
-          enabledBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xff090A0A)),
-            borderRadius: BorderRadius.circular(24),
+            color: Theme.of(context).colorScheme.onTertiary,
           ),
           suffixIcon: IconButton(
               onPressed: () {
@@ -36,7 +26,7 @@ SizedBox passwordWidget(bool obscurePassword, Function isObscurePassword) {
   );
 }
 
-SizedBox emailWidget({Function? validateEmail}) {
+SizedBox emailWidget({Function? validateEmail, required BuildContext context}) {
   return SizedBox(
     height: 50,
     width: double.infinity,
@@ -48,25 +38,14 @@ SizedBox emailWidget({Function? validateEmail}) {
         contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
         hintText: 'E-Mail',
         hintStyle: TextStyle(
-          color: const Color(0xff979C9E).withOpacity(0.8),
-        ),
-        filled: true,
-        fillColor: const Color(0xffF7F9FA),
-        enabledBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
-          borderRadius: BorderRadius.circular(24),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xff090A0A)),
-          borderRadius: BorderRadius.circular(24),
+          color: Theme.of(context).colorScheme.onTertiary,
         ),
       ),
     ),
   );
 }
 
-Row genderWidget(String gender, Function isGender) {
+Row genderWidget(String gender, Function isGender, BuildContext context) {
   return Row(
     children: [
       Expanded(
@@ -78,10 +57,10 @@ Row genderWidget(String gender, Function isGender) {
           child: Container(
             height: 50,
             decoration: BoxDecoration(
-              color: gender == 'Male' ? const Color(0xff317C7D) : Colors.white,
-              border: gender == 'Male'
-                  ? Border.all(color: const Color(0xff317C7D))
-                  : Border.all(color: const Color(0xff979C9E).withOpacity(0.4)),
+              color: gender == 'Male'
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onPrimary,
+              border: Border.all(color: Theme.of(context).colorScheme.tertiary),
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(24),
                   bottomLeft: Radius.circular(24)),
@@ -91,8 +70,8 @@ Row genderWidget(String gender, Function isGender) {
                 'Male',
                 style: TextStyle(
                     color: gender == 'Male'
-                        ? Colors.white
-                        : const Color(0xff979C9E).withOpacity(0.8)),
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onTertiary),
               ),
             ),
           ),
@@ -108,10 +87,8 @@ Row genderWidget(String gender, Function isGender) {
             height: 50,
             decoration: BoxDecoration(
               color:
-                  gender == 'Female' ? const Color(0xff317C7D) : Colors.white,
-              border: gender == 'Female'
-                  ? Border.all(color: const Color(0xff317C7D))
-                  : Border.all(color: const Color(0xff979C9E).withOpacity(0.4)),
+                  gender == 'Female' ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
+              border: Border.all(color: Theme.of(context).colorScheme.tertiary),
               borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(24),
                   bottomRight: Radius.circular(24)),
@@ -121,8 +98,8 @@ Row genderWidget(String gender, Function isGender) {
                 'Female',
                 style: TextStyle(
                     color: gender == 'Female'
-                        ? Colors.white
-                        : const Color(0xff979C9E).withOpacity(0.8)),
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onTertiary),
               ),
             ),
           ),
@@ -132,8 +109,8 @@ Row genderWidget(String gender, Function isGender) {
   );
 }
 
-SizedBox confirmPasswordWidget(
-    bool obscureConfirmPassword, Function isObscureConfirmPassword) {
+SizedBox confirmPasswordWidget(bool obscureConfirmPassword,
+    Function isObscureConfirmPassword, BuildContext context) {
   return SizedBox(
     height: 50,
     width: double.infinity,
@@ -143,18 +120,7 @@ SizedBox confirmPasswordWidget(
           contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
           hintText: 'Confirm Password',
           hintStyle: TextStyle(
-            color: const Color(0xff979C9E).withOpacity(0.8),
-          ),
-          filled: true,
-          fillColor: const Color(0xffF7F9FA),
-          enabledBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xff090A0A)),
-            borderRadius: BorderRadius.circular(24),
+            color: Theme.of(context).colorScheme.onTertiary,
           ),
           suffixIcon: IconButton(
               onPressed: () {
@@ -178,26 +144,16 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
           initialDate: DateTime.now(),
           minDate: DateTime(1950),
           maxDate: DateTime.now(),
-          daysOfTheWeekTextStyle: const TextStyle(
-              color: Color(0xff090A0A),
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
-          leadingDateTextStyle: const TextStyle(
-              color: Color(0xff090A0A),
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
-          enabledCellsTextStyle: const TextStyle(
-              color: Color(0xff090A0A),
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
-          currentDateTextStyle: const TextStyle(
-              color: Color(0xff090A0A),
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
-          disabledCellsTextStyle: TextStyle(
-              color: const Color(0xff090A0A).withOpacity(0.4),
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
+          daysOfTheWeekTextStyle:
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          leadingDateTextStyle:
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          enabledCellsTextStyle:
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          currentDateTextStyle:
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          disabledCellsTextStyle:
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         );
 
         if (date != null) {
@@ -206,9 +162,9 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xff979C9E).withOpacity(0.4)),
+          border: Border.all(color: Theme.of(context).colorScheme.tertiary),
           borderRadius: BorderRadius.circular(24),
-          color: const Color(0xffF7F9FA),
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -218,7 +174,7 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
               dob.isNotEmpty ? dob.substring(0, 10) : 'Date of Birth',
               style: TextStyle(
                 fontSize: 15,
-                color: const Color(0xff979C9E).withOpacity(0.8),
+                color: Theme.of(context).colorScheme.tertiary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -229,7 +185,7 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
   );
 }
 
-SizedBox nameWidget() {
+SizedBox nameWidget(BuildContext context) {
   return SizedBox(
     height: 50,
     width: double.infinity,
@@ -238,18 +194,7 @@ SizedBox nameWidget() {
         contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
         hintText: 'Name',
         hintStyle: TextStyle(
-          color: const Color(0xff979C9E).withOpacity(0.8),
-        ),
-        filled: true,
-        fillColor: const Color(0xffF7F9FA),
-        enabledBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: const Color(0xff979C9E).withOpacity(0.4)),
-          borderRadius: BorderRadius.circular(24),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xff090A0A)),
-          borderRadius: BorderRadius.circular(24),
+          color: Theme.of(context).colorScheme.onTertiary,
         ),
       ),
     ),

@@ -26,16 +26,18 @@ class _LaunchPageState extends State<LaunchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF6F3EE),
       body: SafeArea(
         child: AnimatedOpacity(
           opacity: _pageOpacity,
           duration: const Duration(milliseconds: 1000),
           curve: Curves.easeIn,
-          child: LayoutBuilder( // The LayoutBuilder is used to get the constraints of the screen
+          child: LayoutBuilder(
+            // The LayoutBuilder is used to get the constraints of the screen
             builder: (context, constraints) {
-              return SingleChildScrollView( // The SingleChildScrollView is used to scroll the page if the content is too big for the screen
-                child: ConstrainedBox( // The ConstrainedBox is used to set the minimum height to the screen
+              return SingleChildScrollView(
+                // The SingleChildScrollView is used to scroll the page if the content is too big for the screen
+                child: ConstrainedBox(
+                  // The ConstrainedBox is used to set the minimum height to the screen
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
                   child: IntrinsicHeight(
                     child: Column(
@@ -44,7 +46,8 @@ class _LaunchPageState extends State<LaunchPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset('assets/launch page/surveva_logo_launchpage.svg')
+                            SvgPicture.asset(
+                                'assets/launch page/surveva_logo_launchpage.svg')
                           ],
                         ),
                         const SizedBox(height: 40),
@@ -66,7 +69,8 @@ class _LaunchPageState extends State<LaunchPage> {
                                 child: Text(
                                   'Create surveys. Share opinions.',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w600, fontSize: 18, color: Color(0xff090A0A)),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -77,9 +81,9 @@ class _LaunchPageState extends State<LaunchPage> {
                                 child: Text(
                                   'Get instant analytics',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      color: Color(0xff090A0A)),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -89,20 +93,25 @@ class _LaunchPageState extends State<LaunchPage> {
                                 right: 16,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpPage()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpPage()));
                                   },
                                   child: Container(
                                     height: 46,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                      color: const Color(0xff317C7D),
+                                      color: Theme.of(context).primaryColor,
                                       borderRadius: BorderRadius.circular(24),
                                     ),
-                                    child: const Center(
+                                    child: Center(
                                         child: Text(
                                       'Create Account',
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500),
                                     )),
@@ -119,7 +128,8 @@ class _LaunchPageState extends State<LaunchPage> {
                                     const Text(
                                       'Have an account?',
                                       style: TextStyle(
-                                          fontSize: 14, color: Color(0xff090A0A)),
+                                        fontSize: 14,
+                                      ),
                                       textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(
@@ -127,15 +137,18 @@ class _LaunchPageState extends State<LaunchPage> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginPage()));
                                       },
                                       child: const Text(
                                         'Log In',
                                         style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            decoration: TextDecoration.underline,
-                                            color: Color(0xff090A0A)),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),

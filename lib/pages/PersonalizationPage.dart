@@ -8,7 +8,8 @@ class PersonalizationPage extends StatefulWidget {
   State<PersonalizationPage> createState() => _PersonalizationPageState();
 }
 
-class _PersonalizationPageState extends State<PersonalizationPage> with SingleTickerProviderStateMixin {
+class _PersonalizationPageState extends State<PersonalizationPage>
+    with SingleTickerProviderStateMixin {
   // TODO: Get categories from API
   List<String> categories = [
     'Education & Academia',
@@ -104,7 +105,8 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
   }
 
   void _scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       setState(() {
         _showScrollIcon = false;
@@ -145,14 +147,16 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
                     children: [
                       const Text(
                         'Personalization',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(
                         height: 32,
                       ),
                       const Text(
                         'Customize your Surveva feed',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(
                         height: 10,
@@ -164,7 +168,7 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
-                                color: Colors.black.withOpacity(0.5)),
+                                color: Theme.of(context).colorScheme.secondary),
                             textAlign: TextAlign.center,
                           )),
                       const SizedBox(
@@ -175,13 +179,13 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
                         children: [
                           const Text(
                             'Selected categories',
-                            style:
-                                TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           Text(
                             '${selectedCategories.length}/3',
-                            style:
-                                const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w400),
                           )
                         ],
                       ),
@@ -196,15 +200,17 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Language preferences',
-                            style:
-                                TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
                             textAlign: TextAlign.left,
                           )),
                       const SizedBox(
                         height: 24,
                       ),
                       languagePreferencesWidget(),
-                      const SizedBox(height: 12,),
+                      const SizedBox(
+                        height: 12,
+                      ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Wrap(
@@ -219,44 +225,64 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
                                     child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(24),
-                                            border:
-                                                Border.all(color: const Color(0xff317C7D)),
-                                            color: const Color(0xff317C7D)),
+                                            borderRadius:
+                                                BorderRadius.circular(24),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
                                         child: Text(
                                           language,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
-                                              color: Colors.white),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary),
                                         )),
                                   ))
                               .toList(),
                         ),
                       ),
-                      const SizedBox(height: 85,),
+                      const SizedBox(
+                        height: 85,
+                      ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const DiscoveryPage()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DiscoveryPage()));
                         },
                         child: Container(
                             width: double.infinity,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: selectedCategories.length == 3 && selectedLanguages.length == 3 ? const Color(0xff317C7D) : const Color(0xffF2F4F5),
+                              color: selectedCategories.length == 3 &&
+                                      selectedLanguages.length == 3
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).colorScheme.tertiary,
                               borderRadius: BorderRadius.circular(24),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
                                 'Continue',
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: selectedCategories.length == 3 &&
+                                            selectedLanguages.length == 3
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onTertiary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600),
                               ),
                             )),
                       ),
-                      const SizedBox(height: 16,)
+                      const SizedBox(
+                        height: 16,
+                      )
                     ],
                   ),
                 ),
@@ -269,10 +295,10 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
                 bottom: 16,
                 child: SlideTransition(
                   position: _offsetAnimation,
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_downward_rounded,
                     size: 30,
-                    color: Color(0xff317C7D),
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
@@ -285,11 +311,8 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
   DropdownButtonFormField<String> languagePreferencesWidget() {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        filled: true,
-        fillColor: const Color(0xffF7F9FA),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(24),
-          borderSide: const BorderSide(color: Color(0xffF7F9FA)),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         errorText: languageError,
@@ -333,13 +356,11 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                    color: selectedCategories.contains(category)
-                        ? const Color(0xff317C7D)
-                        : const Color(0xffE3E5E5)),
+                border:
+                    Border.all(color: Theme.of(context).colorScheme.tertiary),
                 color: selectedCategories.contains(category)
-                    ? const Color(0xff317C7D)
-                    : Colors.white,
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onPrimary,
               ),
               child: Text(
                 category,
@@ -347,8 +368,8 @@ class _PersonalizationPageState extends State<PersonalizationPage> with SingleTi
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: selectedCategories.contains(category)
-                        ? Colors.white
-                        : Colors.black),
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSurface),
               ),
             ),
           );
