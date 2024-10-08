@@ -200,3 +200,20 @@ SizedBox nameWidget(BuildContext context) {
     ),
   );
 }
+
+SizedBox commentWidget(BuildContext context) {
+  return SizedBox(
+    height: 50,
+    width: double.infinity,
+    child: TextField(
+      autofocus: true,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
+        hintText: 'Add a comment',
+        hintStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onTertiary,
+        ),
+      ),
+    ),
+  );
+}

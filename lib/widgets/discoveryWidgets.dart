@@ -1,5 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/widgets/authWidgets.dart';
+
+Dialog commentsModal(
+    BuildContext context, List<Map<String, dynamic>> comments) {
+  return Dialog(
+    insetPadding: EdgeInsets.zero,
+    alignment: Alignment.bottomCenter,
+    child: Container(
+      width: MediaQuery.of(context).size.width,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.95,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(16), bottom: Radius.zero),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 8),
+            Container(
+              height: 5,
+              width: 48,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onTertiary,
+                borderRadius: BorderRadius.circular(24),
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            const Text(
+              'Comments',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            ),
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      comments.isEmpty
+                          ? Container() // No content when there are comments
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'No comments yet',
+                                  style: TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(height: 18),
+                                Text(
+                                  'Start the conversation',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            commentWidget(context)
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
 Positioned bottomNavigationWidget(
     String navigation, Function setNavigation, BuildContext context) {
@@ -138,7 +214,8 @@ Positioned bottomNavigationWidget(
   );
 }
 
-Row genderAndAgeAnalytics(BuildContext context, Animation<double> _animation, List<int> analytics, bool isGender) {
+Row genderAndAgeAnalytics(BuildContext context, Animation<double> _animation,
+    List<int> analytics, bool isGender) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.end,
@@ -168,8 +245,8 @@ Row genderAndAgeAnalytics(BuildContext context, Animation<double> _animation, Li
                     ),
                     Text(
                       isGender ? ' Male' : ' 18',
-                      style:
-                          const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -184,8 +261,8 @@ Row genderAndAgeAnalytics(BuildContext context, Animation<double> _animation, Li
                     ),
                     Text(
                       isGender ? ' Female' : ' 18-30',
-                      style:
-                          const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -200,8 +277,8 @@ Row genderAndAgeAnalytics(BuildContext context, Animation<double> _animation, Li
                     ),
                     Text(
                       isGender ? ' Others' : ' 30+',
-                      style:
-                          const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -230,7 +307,8 @@ Row genderAndAgeAnalytics(BuildContext context, Animation<double> _animation, Li
                               widthFactor: _animation.value,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                   borderRadius: const BorderRadius.horizontal(
                                     right: Radius.circular(24),
                                   ),
@@ -330,8 +408,8 @@ Row genderAndAgeAnalytics(BuildContext context, Animation<double> _animation, Li
   );
 }
 
-
-Row geographyAnalytics(BuildContext context, Animation<double> _animation, List<int> analytics) {
+Row geographyAnalytics(
+    BuildContext context, Animation<double> _animation, List<int> analytics) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.end,
@@ -378,7 +456,7 @@ Row geographyAnalytics(BuildContext context, Animation<double> _animation, List<
                     const Text(
                       ' Americas',
                       style:
-                           TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -394,7 +472,7 @@ Row geographyAnalytics(BuildContext context, Animation<double> _animation, List<
                     const Text(
                       ' Asia',
                       style:
-                           TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -410,7 +488,7 @@ Row geographyAnalytics(BuildContext context, Animation<double> _animation, List<
                     const Text(
                       ' Australia',
                       style:
-                           TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -439,7 +517,8 @@ Row geographyAnalytics(BuildContext context, Animation<double> _animation, List<
                               widthFactor: _animation.value,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                   borderRadius: const BorderRadius.horizontal(
                                     right: Radius.circular(24),
                                   ),
@@ -472,7 +551,8 @@ Row geographyAnalytics(BuildContext context, Animation<double> _animation, List<
                               widthFactor: _animation.value,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                   borderRadius: const BorderRadius.horizontal(
                                     right: Radius.circular(24),
                                   ),
