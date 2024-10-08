@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:surveva_app/pages/AnimationPage.dart';
 
-void main() {
+void main() async{
   runApp(const MyApp());
 }
 

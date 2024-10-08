@@ -76,7 +76,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       builder: (BuildContext context) {
                         return Dialog(
                           insetPadding: EdgeInsets.zero,
-                          child: Container(
+                          child: SizedBox(
                             height: 350,
                             width: 330,
                             child: passwordResetModal(context),

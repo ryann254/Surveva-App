@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:surveva_app/pages/DiscoveryPage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PersonalizationPage extends StatefulWidget {
   const PersonalizationPage({super.key});
@@ -132,6 +133,24 @@ class _PersonalizationPageState extends State<PersonalizationPage>
     }
   }
 
+  Future<void> askForNotificationPermission() async {
+    try {
+      PermissionStatus status = await Permission.notification.request();
+      if (status.isGranted) {
+        print('Notification permission granted');
+      } else if (status.isDenied) {
+        print('Notification permission denied');
+      } else if (status.isPermanentlyDenied) {
+        print('Notification permission permanently denied');
+        // Todo: Discuss with Faisal if we need to open the app settings
+        // await openAppSettings();
+      }
+    } catch (e) {
+      print('Error requesting notification permission: $e');
+      // Handle the error, maybe show a dialog to the user
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,7 +266,8 @@ class _PersonalizationPageState extends State<PersonalizationPage>
                         height: 85,
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          await askForNotificationPermission();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
