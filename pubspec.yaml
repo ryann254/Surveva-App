@@ -39,6 +39,8 @@ dependencies:
   date_picker_plus: ^3.0.2
   flutter_verification_code: ^1.1.7
   permission_handler: ^11.3.1
+  syncfusion_flutter_charts: ^27.1.52
+  fl_chart: ^0.69.0
 
 dev_dependencies:
   flutter_test:

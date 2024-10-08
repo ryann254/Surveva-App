@@ -8,7 +8,7 @@ Positioned bottomNavigationWidget(
     right: 16,
     bottom: 16,
     child: Container(
-      padding: const EdgeInsets.all(5),
+      padding: EdgeInsets.zero,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
@@ -39,7 +39,7 @@ Positioned bottomNavigationWidget(
                   children: [
                     Icon(
                       Icons.search_sharp,
-                      size: navigation == 'discovery' ? 20 : 24,
+                      size: 22,
                       color: navigation == 'discovery'
                           ? Theme.of(context).colorScheme.onPrimary
                           : Theme.of(context).primaryColor,
@@ -72,16 +72,16 @@ Positioned bottomNavigationWidget(
                 children: [
                   SvgPicture.asset(
                     'assets/discovery/create.svg',
-                    height: navigation == 'create' ? 20 : 24,
-                    width: navigation == 'create' ? 20 : 24,
+                    height: 22,
+                    width: 22,
                     colorFilter: navigation == 'create'
                         ? ColorFilter.mode(
                             Theme.of(context).colorScheme.onPrimary,
                             BlendMode.srcIn)
                         : null,
                   ),
-                  const SizedBox(width: 5),
-                  if (navigation == 'create')
+                  if (navigation == 'create') ...[
+                    const SizedBox(width: 5),
                     Text(
                       'Create',
                       style: TextStyle(
@@ -89,6 +89,7 @@ Positioned bottomNavigationWidget(
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).colorScheme.onPrimary),
                     )
+                  ],
                 ],
               ),
             ),
@@ -109,23 +110,24 @@ Positioned bottomNavigationWidget(
                 children: [
                   SvgPicture.asset(
                     'assets/discovery/profile.svg',
-                    height: navigation == 'profile' ? 20 : 24,
-                    width: navigation == 'profile' ? 20 : 24,
+                    height: 22,
+                    width: 22,
                     colorFilter: navigation == 'profile'
                         ? ColorFilter.mode(
                             Theme.of(context).colorScheme.onPrimary,
                             BlendMode.srcIn)
                         : null,
                   ),
-                  const SizedBox(width: 5),
-                  if (navigation == 'profile')
+                  if (navigation == 'profile') ...[
+                    const SizedBox(width: 5),
                     Text(
                       'Profile',
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).colorScheme.onPrimary),
-                    )
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -133,5 +135,443 @@ Positioned bottomNavigationWidget(
         ],
       ),
     ),
+  );
+}
+
+Row genderAndAgeAnalytics(BuildContext context, Animation<double> _animation, List<int> analytics, bool isGender) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Expanded(
+        flex: 2,
+        child: Text(
+          isGender ? 'Gender' : 'Age',
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+      ),
+      Expanded(
+        flex: 5,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(24)),
+                    ),
+                    Text(
+                      isGender ? ' Male' : ' 18',
+                      style:
+                          const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          borderRadius: BorderRadius.circular(24)),
+                    ),
+                    Text(
+                      isGender ? ' Female' : ' 18-30',
+                      style:
+                          const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          borderRadius: BorderRadius.circular(24)),
+                    ),
+                    Text(
+                      isGender ? ' Others' : ' 30+',
+                      style:
+                          const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return SizedBox(
+                  height: 28,
+                  child: Stack(
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            // 10 is added to make sure the third bar wraps around the second one
+                            flex: 100 - (analytics[2] + 10),
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: analytics[2] + 10,
+                            child: FractionallySizedBox(
+                              widthFactor: _animation.value,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  borderRadius: const BorderRadius.horizontal(
+                                    right: Radius.circular(24),
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  '${analytics[2]}%',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
+                                )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            // 10 is added to make sure the second bar wraps around the first one
+                            flex: 100 - (analytics[1] + analytics[2] + 10),
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: analytics[1] + 10,
+                            child: FractionallySizedBox(
+                              widthFactor: _animation.value,
+                              child: Container(
+                                height: 28,
+                                decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                    borderRadius: const BorderRadius.horizontal(
+                                        right: Radius.circular(24))),
+                                child: Center(
+                                    child: Text(
+                                  '${analytics[1]}%',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                )),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: analytics[2],
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: analytics[0],
+                            child: FractionallySizedBox(
+                              widthFactor: _animation.value,
+                              child: Container(
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  '${analytics[0]}%',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                )),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 100 - analytics[0],
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      )
+    ],
+  );
+}
+
+
+Row geographyAnalytics(BuildContext context, Animation<double> _animation, List<int> analytics) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      const Expanded(
+        flex: 2,
+        child: Text(
+          'Geography',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+      ),
+      Expanded(
+        flex: 5,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(24)),
+                    ),
+                    const Text(
+                      ' Europe',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          borderRadius: BorderRadius.circular(24)),
+                    ),
+                    const Text(
+                      ' Americas',
+                      style:
+                           TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          borderRadius: BorderRadius.circular(24)),
+                    ),
+                    const Text(
+                      ' Asia',
+                      style:
+                           TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.secondary,
+                          borderRadius: BorderRadius.circular(24)),
+                    ),
+                    const Text(
+                      ' Australia',
+                      style:
+                           TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return SizedBox(
+                  height: 28,
+                  child: Stack(
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            // 10 is added to make sure the third bar wraps around the second one
+                            flex: 100 - (analytics[3] + 10),
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: analytics[3] + 10,
+                            child: FractionallySizedBox(
+                              widthFactor: _animation.value,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  borderRadius: const BorderRadius.horizontal(
+                                    right: Radius.circular(24),
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  '${analytics[2]}%',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            // 10 is added to make sure the third bar wraps around the second one
+                            flex: 100 - (analytics[2] + analytics[3] + 10),
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: analytics[2] + 10,
+                            child: FractionallySizedBox(
+                              widthFactor: _animation.value,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  borderRadius: const BorderRadius.horizontal(
+                                    right: Radius.circular(24),
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  '${analytics[2]}%',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
+                                )),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: analytics[3],
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            // 10 is added to make sure the second bar wraps around the first one
+                            flex: 100 - (analytics[1] + analytics[2] + 10),
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: analytics[1] + 10,
+                            child: FractionallySizedBox(
+                              widthFactor: _animation.value,
+                              child: Container(
+                                height: 28,
+                                decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                    borderRadius: const BorderRadius.horizontal(
+                                        right: Radius.circular(24))),
+                                child: Center(
+                                    child: Text(
+                                  '${analytics[1]}%',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                )),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: analytics[2],
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: analytics[0],
+                            child: FractionallySizedBox(
+                              widthFactor: _animation.value,
+                              child: Container(
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  '${analytics[0]}%',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                )),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 100 - analytics[0],
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      )
+    ],
   );
 }

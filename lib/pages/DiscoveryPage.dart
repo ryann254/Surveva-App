@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:surveva_app/pages/CreatePollPage.dart';
 import 'package:surveva_app/pages/ProfilePage.dart';
+import 'package:surveva_app/pages/VotingPage.dart';
 import 'package:surveva_app/widgets/discoveryWidgets.dart';
 
 class DiscoveryPage extends StatefulWidget {
@@ -16,16 +17,16 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
   late TextEditingController _searchController;
 
   // TODO: get questions from API
-  List<String> questions = [
-    'Do you love cats?',
-    'Do you think Donald Trump will win the election?',
-    'What\'s your favorite dog breed?',
-    'Do you prefer shopping online or in-store?',
-    'How many hours do you spend on social media per day?',
-    'Will electric cars ever replace gas-powered vehicles?',
-    'Do you agree with Biden\'s policies?'
+  List<Map<String, dynamic>> questions = [
+    {'question': 'Do you love cats?', 'answers': ['Yes', 'No', 'Maybe']},
+    {'question': 'Do you think Donald Trump will win the election?', 'answers': ['Yes', 'No', 'Unsure']},
+    {'question': 'What\'s your favorite dog breed?', 'answers': ['Labrador', 'German Shepherd', 'Golden Retriever', 'Other']},
+    {'question': 'Do you prefer shopping online or in-store?', 'answers': ['Online', 'In-store', 'Both equally']},
+    {'question': 'How many hours do you spend on social media per day?', 'answers': ['Less than 1', '1-3', '3-5', 'More than 5']},
+    {'question': 'Will electric cars ever replace gas-powered vehicles?', 'answers': ['Yes', 'No', 'Partially']},
+    {'question': 'Do you agree with Biden\'s policies?', 'answers': ['Yes', 'No', 'Some of them', 'Not sure']}
   ];
-  List<String> filteredQuestions = [];
+  List<Map<String, dynamic>> filteredQuestions = [];
 
   @override
   void initState() {
@@ -60,21 +61,26 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                   child: ListView.builder(
                     itemCount: filteredQuestions.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.only(
-                            top: 34, bottom: 34, left: 24, right: 24),
-                        margin: const EdgeInsets.only(top: 8),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        child: Text(
-                          filteredQuestions[index],
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              ),
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => VotingPage(question: filteredQuestions[index])));
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.only(
+                              top: 34, bottom: 34, left: 24, right: 24),
+                          margin: const EdgeInsets.only(top: 8),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Text(
+                            filteredQuestions[index]['question'],
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                ),
+                          ),
                         ),
                       );
                     },
@@ -91,7 +97,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
 
 
 
-  Row searchWidget(List<String> questions) {
+  Row searchWidget(List<Map<String, dynamic>> questions) {
     return Row(
       children: [
         Expanded(
@@ -104,7 +110,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                   isTyping = value.isNotEmpty;
                   filteredQuestions = questions
                       .where((question) =>
-                          question.toLowerCase().contains(value.toLowerCase()))
+                          question['question'].toLowerCase().contains(value.toLowerCase()))
                       .toList();
                 });
               },
