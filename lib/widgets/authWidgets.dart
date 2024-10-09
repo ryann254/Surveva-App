@@ -86,8 +86,9 @@ Row genderWidget(String gender, Function isGender, BuildContext context) {
           child: Container(
             height: 50,
             decoration: BoxDecoration(
-              color:
-                  gender == 'Female' ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
+              color: gender == 'Female'
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onPrimary,
               border: Border.all(color: Theme.of(context).colorScheme.tertiary),
               borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(24),
@@ -201,19 +202,34 @@ SizedBox nameWidget(BuildContext context) {
   );
 }
 
-SizedBox commentWidget(BuildContext context) {
+SizedBox commentWidget(
+    BuildContext context,
+    List<Map<String, dynamic>> comments,
+    TextEditingController commentController,
+    Function addComment) {
   return SizedBox(
     height: 50,
     width: double.infinity,
     child: TextField(
+      controller: commentController,
       autofocus: true,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
-        hintText: 'Add a comment',
-        hintStyle: TextStyle(
-          color: Theme.of(context).colorScheme.onTertiary,
-        ),
-      ),
+          contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
+          hintText: 'Add a comment',
+          hintStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onTertiary,
+          ),
+          suffixIcon: IconButton(
+              onPressed: () {
+                if (commentController.text.isNotEmpty) {
+                  addComment(commentController.text);
+                  commentController.clear();
+                }
+              },
+              icon: Icon(
+                Icons.send,
+                color: Theme.of(context).primaryColor,
+              ))),
     ),
   );
 }

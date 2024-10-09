@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/utils/dateUtils.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
 
 Dialog commentsModal(
-    BuildContext context, List<Map<String, dynamic>> comments) {
+    BuildContext context, List<Map<String, dynamic>> comments, TextEditingController commentController, Function addComment, Function removeComment) {
   return Dialog(
     insetPadding: EdgeInsets.zero,
     alignment: Alignment.bottomCenter,
@@ -38,38 +39,121 @@ Dialog commentsModal(
               'Comments',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
-            Expanded(
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      comments.isEmpty
-                          ? Container() // No content when there are comments
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'No comments yet',
-                                  style: TextStyle(
-                                      fontSize: 20, fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(height: 18),
-                                Text(
-                                  'Start the conversation',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Theme.of(context).colorScheme.secondary,
-                                  ),
-                                ),
-                              ],
+            const SizedBox(height: 22),
+            comments.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          final comment = comments[index];
+                          return Dismissible(
+                            key: Key(index.toString()), // Assuming each comment has a unique id
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              alignment: Alignment.centerRight,
+                              color: Colors.red,
+                              child: const Padding(
+                                padding: EdgeInsets.only(right: 16.0),
+                                child: Icon(Icons.delete, color: Colors.white),
+                              ),
                             ),
-                    ],
+                            onDismissed: (direction) {
+                              removeComment(index); // Call the removeComment function
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 44,
+                                    height: 44,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    child: Center(
+                                        child: comment['profileImg'] == '' ? Text(
+                                      comment['username'][0],
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ) : SvgPicture.asset(
+                                      comment['profileImg'],
+                                      height: 44,
+                                      width: 44,
+                                    )),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              comment['username'],
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(width: 6),
+                                            Text(
+                                              getRelativeTime(comment['date']),
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onTertiary),
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          comment['comment'],
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                  )
+                : Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'No comments yet',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            'Start the conversation',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            commentWidget(context)
+            commentWidget(context, comments, commentController, addComment)
           ],
         ),
       ),

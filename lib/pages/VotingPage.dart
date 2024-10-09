@@ -18,6 +18,7 @@ class _VotingPageState extends State<VotingPage>
   bool isLiked = false;
   String selectedAnswer = '';
   bool isSubmitted = false;
+  TextEditingController commentController = TextEditingController();
 
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -35,15 +36,32 @@ class _VotingPageState extends State<VotingPage>
       'username': 'Monkey D. Luffy',
       'profileImg': '',
       'comment': 'I am the future king of the pirates',
-      'date': '2024-02-01',
+      'date': '2024-09-01',
     },
     {
       'username': 'Sanji',
       'profileImg': '',
       'comment': 'I will find the all blue',
-      'date': '2024-02-01',
+      'date': '2023-10-05',
     }
   ];
+
+  addComment(String comment) {
+    setState(() {
+      comments.add({
+        'username': 'Roronoa Zoro',
+        'profileImg': '',
+        'comment': comment,
+        'date': DateTime.now().toString(),
+      });
+    });
+  }
+
+  removeComment(int index) {
+    setState(() {
+      comments.removeAt(index);
+    });
+  }
 
   @override
   void initState() {
@@ -290,7 +308,7 @@ class _VotingPageState extends State<VotingPage>
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                commentsModal(context, comments));
+                                commentsModal(context, comments, commentController, addComment, removeComment));
                       },
                       child: SvgPicture.asset('assets/discovery/comments.svg',
                           height: 36, width: 36))
