@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/widgets/discoveryWidgets.dart';
+import 'dart:ui';
 
 class VotingPage extends StatefulWidget {
   final Map<String, dynamic> question;
@@ -16,6 +17,8 @@ class _VotingPageState extends State<VotingPage>
   final profileImg = '';
   bool isLiked = false;
   String selectedAnswer = '';
+  bool isSubmitted = false;
+
   late AnimationController _animationController;
   late Animation<double> _animation;
   List<int> genderAnalytics = [70, 27, 3];
@@ -65,52 +68,7 @@ class _VotingPageState extends State<VotingPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-            child: SvgPicture.asset('assets/icons/arrow-left.svg'),
-          ),
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Center(
-                child: profileImg.isEmpty
-                    ? Text(
-                        widget.question['question'].substring(0, 1),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      )
-                    : SvgPicture.asset(
-                        profileImg,
-                      ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            const Text(
-              'Ryan Njoroge',
-              style: TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
-            )
-          ],
-        ),
-        centerTitle: true,
-      ),
+      appBar: appBar(context),
       body: SafeArea(
         child: Column(
           children: [
@@ -176,6 +134,7 @@ class _VotingPageState extends State<VotingPage>
                         ),
                         itemBuilder: (context, index) {
                           final answer = widget.question['answers'][index];
+                          final analytics = widget.question['analytics'][index];
                           return GestureDetector(
                             onTap: () {
                               setState(() {
@@ -185,9 +144,9 @@ class _VotingPageState extends State<VotingPage>
                             child: Container(
                               padding: const EdgeInsets.all(12.5),
                               decoration: BoxDecoration(
-                              color: selectedAnswer == answer
-                                  ? Theme.of(context).colorScheme.onPrimary
-                                  : Theme.of(context).colorScheme.surface,
+                                color: selectedAnswer == answer
+                                    ? Theme.of(context).colorScheme.onPrimary
+                                    : Theme.of(context).colorScheme.surface,
                               ),
                               child: Row(
                                 mainAxisAlignment:
@@ -200,6 +159,7 @@ class _VotingPageState extends State<VotingPage>
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                   ),
+                                  isSubmitted ? Text('$analytics%', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),) : 
                                   Container(
                                     width: 24,
                                     height: 24,
@@ -227,20 +187,24 @@ class _VotingPageState extends State<VotingPage>
                         color: Colors.white,
                       ),
                       const SizedBox(
-                        height: 28,
+                        height: 20,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            isSubmitted = true;
+                          });
+                        },
                         child: Container(
                             width: double.infinity,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
+                              color: isSubmitted ? Theme.of(context).colorScheme.onSurface : Theme.of(context).primaryColor,
                               borderRadius: BorderRadius.circular(24),
                             ),
                             child: Center(
                               child: Text(
-                                'Submit',
+                                isSubmitted ? 'Submitted' :'Submit',
                                 style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.onPrimary,
@@ -250,17 +214,28 @@ class _VotingPageState extends State<VotingPage>
                             )),
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: 5,
                       ),
                       Text(
-                        'Vote to see the analytics',
+                        isSubmitted ? 'Enjoy the analytics!' :'Vote to see the analytics',
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Theme.of(context).colorScheme.secondary),
                       ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
                       const SizedBox(
-                        height: 18,
+                        height: 12,
                       ),
                       genderAndAgeAnalytics(
                           context, _animation, genderAnalytics, true),
@@ -269,11 +244,27 @@ class _VotingPageState extends State<VotingPage>
                           context, _animation, ageAnalytics, false),
                       const SizedBox(height: 24),
                       geographyAnalytics(context, _animation, geoAnalytics),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
-              ),
+                if (!isSubmitted)
+                  Positioned.fill(
+                    child: ClipRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          color: Colors.black.withOpacity(0.2),
+                          child: const Center(
+                              child: Icon(
+                            Icons.visibility_off,
+                            size: 48,
+                          )),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -309,6 +300,55 @@ class _VotingPageState extends State<VotingPage>
           ],
         ),
       ),
+    );
+  }
+
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      leading: GestureDetector(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16.0, top: 10.0),
+          child: SvgPicture.asset('assets/icons/arrow-left.svg'),
+        ),
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Center(
+              child: profileImg.isEmpty
+                  ? Text(
+                      widget.question['question'].substring(0, 1),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )
+                  : SvgPicture.asset(
+                      profileImg,
+                    ),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const Text(
+            'Ryan Njoroge',
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+          )
+        ],
+      ),
+      centerTitle: true,
     );
   }
 }

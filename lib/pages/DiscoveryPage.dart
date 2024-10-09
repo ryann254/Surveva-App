@@ -18,13 +18,13 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
 
   // TODO: get questions from API
   List<Map<String, dynamic>> questions = [
-    {'question': 'Do you love cats?', 'answers': ['Yes', 'No', 'Maybe']},
-    {'question': 'Do you think Donald Trump will win the election?', 'answers': ['Yes', 'No', 'Unsure']},
-    {'question': 'What\'s your favorite dog breed?', 'answers': ['Labrador', 'German Shepherd', 'Golden Retriever', 'Other']},
-    {'question': 'Do you prefer shopping online or in-store?', 'answers': ['Online', 'In-store', 'Both equally']},
-    {'question': 'How many hours do you spend on social media per day?', 'answers': ['Less than 1', '1-3', '3-5', 'More than 5']},
-    {'question': 'Will electric cars ever replace gas-powered vehicles?', 'answers': ['Yes', 'No', 'Partially']},
-    {'question': 'Do you agree with Biden\'s policies?', 'answers': ['Yes', 'No', 'Some of them', 'Not sure']}
+    {'question': 'Do you love cats?', 'answers': ['Yes', 'No', 'Maybe'], 'analytics': ['40', '30', '30']},
+    {'question': 'Do you think Donald Trump will win the election?', 'answers': ['Yes', 'No', 'Unsure'], 'analytics': ['40', '30', '30']},
+    {'question': 'What\'s your favorite dog breed?', 'answers': ['Labrador', 'German Shepherd', 'Golden Retriever', 'Other'], 'analytics': ['40', '30', '30', '30']},
+    {'question': 'Do you prefer shopping online or in-store?', 'answers': ['Online', 'In-store', 'Both equally'], 'analytics': ['40', '30', '30']},
+    {'question': 'How many hours do you spend on social media per day?', 'answers': ['Less than 1', '1-3', '3-5', 'More than 5'], 'analytics': ['40', '30', '30', '30']},
+    {'question': 'Will electric cars ever replace gas-powered vehicles?', 'answers': ['Yes', 'No', 'Partially'], 'analytics': ['40', '30', '30']},
+    {'question': 'Do you agree with Biden\'s policies?', 'answers': ['Yes', 'No', 'Some of them', 'Not sure'], 'analytics': ['40', '30', '30', '30']}
   ];
   List<Map<String, dynamic>> filteredQuestions = [];
 
