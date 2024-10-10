@@ -39,7 +39,6 @@ dependencies:
   date_picker_plus: ^3.0.2
   flutter_verification_code: ^1.1.7
   permission_handler: ^11.3.1
-  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +66,7 @@ flutter:
   assets:
     - assets/launch page/
     - assets/discovery/
+    - assets/profile/
     - assets/auth/
     - assets/forgot password/
     - assets/icons/
