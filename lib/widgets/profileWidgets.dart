@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Dialog confirmProfileChangesModal(BuildContext context, Function() onDiscard) {
   return Dialog(
-    backgroundColor: Color(0xffF5F5F5).withOpacity(0.7),
+    backgroundColor: const Color(0xffF5F5F5).withOpacity(0.7),
     child: SizedBox(
       height: 240,
       width: 350,
