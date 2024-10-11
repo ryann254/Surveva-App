@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/pages/auth/LoginPage.dart';
@@ -74,13 +76,29 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return Dialog(
-                          insetPadding: EdgeInsets.zero,
-                          child: SizedBox(
-                            height: 350,
-                            width: 330,
-                            child: passwordResetModal(context),
-                          ),
+                        return Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                            ),
+                            Dialog(
+                              insetPadding: EdgeInsets.zero,
+                              child: SizedBox(
+                                height: 350,
+                                width: 330,
+                                child: passwordResetModal(context),
+                              ),
+                            ),
+                          ],
                         );
                       });
                 },

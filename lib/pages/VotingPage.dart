@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/widgets/discoveryWidgets.dart';
 import 'dart:ui';
 
+import 'package:surveva_app/widgets/votingWidgets.dart';
+
 class VotingPage extends StatefulWidget {
   final Map<String, dynamic> question;
 
@@ -16,6 +18,7 @@ class _VotingPageState extends State<VotingPage>
     with SingleTickerProviderStateMixin {
   final profileImg = '';
   bool isLiked = false;
+  bool isOwner = false;
   String selectedAnswer = '';
   bool isSubmitted = false;
   TextEditingController commentController = TextEditingController();
@@ -93,7 +96,7 @@ class _VotingPageState extends State<VotingPage>
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
                       Row(
@@ -125,8 +128,29 @@ class _VotingPageState extends State<VotingPage>
                               ],
                             ),
                           ),
-                          Icon(
-                            Icons.more_horiz,
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  barrierColor: Colors.transparent,
+                                  builder: (BuildContext context) => Stack(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                          child: Container(
+                                            color: Colors.black.withOpacity(0.8),
+                                          ),
+                                        ),
+                                      ),
+                                      moreOptionsModal(context, isOwner),
+                                    ],
+                                  ));
+                            },
+                            icon: const Icon(Icons.more_horiz),
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                         ],
@@ -177,22 +201,29 @@ class _VotingPageState extends State<VotingPage>
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                  isSubmitted ? Text('$analytics%', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),) : 
-                                  Container(
-                                    width: 24,
-                                    height: 24,
-                                    decoration: BoxDecoration(
-                                      color: selectedAnswer == answer
-                                          ? Theme.of(context).primaryColor
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .surface,
-                                      borderRadius: BorderRadius.circular(24),
-                                      border: Border.all(
-                                          color: const Color(0xffDDDAD3),
-                                          width: 1),
-                                    ),
-                                  )
+                                  isSubmitted
+                                      ? Text(
+                                          '$analytics%',
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      : Container(
+                                          width: 24,
+                                          height: 24,
+                                          decoration: BoxDecoration(
+                                            color: selectedAnswer == answer
+                                                ? Theme.of(context).primaryColor
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
+                                            borderRadius:
+                                                BorderRadius.circular(24),
+                                            border: Border.all(
+                                                color: const Color(0xffDDDAD3),
+                                                width: 1),
+                                          ),
+                                        )
                                 ],
                               ),
                             ),
@@ -217,12 +248,14 @@ class _VotingPageState extends State<VotingPage>
                             width: double.infinity,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: isSubmitted ? Theme.of(context).colorScheme.onSurface : Theme.of(context).primaryColor,
+                              color: isSubmitted
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : Theme.of(context).primaryColor,
                               borderRadius: BorderRadius.circular(24),
                             ),
                             child: Center(
                               child: Text(
-                                isSubmitted ? 'Submitted' :'Submit',
+                                isSubmitted ? 'Submitted' : 'Submit',
                                 style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.onPrimary,
@@ -235,7 +268,9 @@ class _VotingPageState extends State<VotingPage>
                         height: 5,
                       ),
                       Text(
-                        isSubmitted ? 'Enjoy the analytics!' :'Vote to see the analytics',
+                        isSubmitted
+                            ? 'Enjoy the analytics!'
+                            : 'Vote to see the analytics',
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -307,8 +342,28 @@ class _VotingPageState extends State<VotingPage>
                       onTap: () {
                         showDialog(
                             context: context,
-                            builder: (BuildContext context) =>
-                                commentsModal(context, comments, commentController, addComment, removeComment));
+                            barrierColor: Colors.transparent,
+                            builder: (BuildContext context) => Stack(
+                              children: [
+                                GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                          child: Container(
+                                            color: Colors.black.withOpacity(0.8),
+                                          ),
+                                        ),
+                                      ),
+                                commentsModal(
+                                    context,
+                                    comments,
+                                    commentController,
+                                    addComment,
+                                    removeComment),
+                              ],
+                            ));
                       },
                       child: SvgPicture.asset('assets/discovery/comments.svg',
                           height: 36, width: 36))

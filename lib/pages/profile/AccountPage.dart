@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -52,7 +54,24 @@ class _AccountPageState extends State<AccountPage> {
             child: SvgPicture.asset('assets/icons/arrow-left.svg'),
           ),
           onTap: () {
-            showDialog(context: context, builder: (context) => confirmProfileChangesModal(context, onDiscard));
+            showDialog(
+                context: context,
+                builder: (context) => Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              color: Colors.black.withOpacity(0.8),
+                            ),
+                          ),
+                        ),
+                        confirmProfileChangesModal(context, onDiscard),
+                      ],
+                    ));
           },
         ),
         title: const Padding(
@@ -189,7 +208,9 @@ class _AccountPageState extends State<AccountPage> {
                       width: double.infinity,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: isProfileSaved ? Theme.of(context).colorScheme.onSurface : Theme.of(context).primaryColor,
+                        color: isProfileSaved
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Center(
