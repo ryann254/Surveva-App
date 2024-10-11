@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/pages/CreatePollPage.dart';
 import 'package:surveva_app/pages/DiscoveryPage.dart';
 import 'package:surveva_app/pages/VotingPage.dart';
+import 'package:surveva_app/pages/profile/AccountPage.dart';
 import 'package:surveva_app/widgets/discoveryWidgets.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -213,20 +214,25 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget ownerAccount(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: 46,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface,
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Center(
-            child: Text(
-              'Account',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontWeight: FontWeight.w500),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const AccountPage()));
+          },
+          child: Container(
+            width: double.infinity,
+            height: 46,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Center(
+              child: Text(
+                'Account',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.w500),
+              ),
             ),
           ),
         ),

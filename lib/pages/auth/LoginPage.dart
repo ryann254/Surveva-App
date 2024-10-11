@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:surveva_app/pages/ForgotPasswordPage.dart';
+import 'package:surveva_app/pages/auth/ForgotPasswordPage.dart';
 import 'package:surveva_app/pages/DiscoveryPage.dart';
-import 'package:surveva_app/pages/SignUpPage.dart';
+import 'package:surveva_app/pages/auth/SignUpPage.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
 
 class LoginPage extends StatefulWidget {

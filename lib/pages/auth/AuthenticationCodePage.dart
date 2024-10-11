@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
-import 'package:surveva_app/pages/ResetPasswordPage.dart';
+import 'package:surveva_app/pages/auth/ResetPasswordPage.dart';
 
 class AuthenticationCodePage extends StatefulWidget {
   const AuthenticationCodePage({super.key});
