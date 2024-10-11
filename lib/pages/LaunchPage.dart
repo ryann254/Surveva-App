@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:surveva_app/pages/LoginPage.dart';
-import 'package:surveva_app/pages/SignUpPage.dart';
+import 'package:surveva_app/pages/auth/LoginPage.dart';
+import 'package:surveva_app/pages/auth/SignUpPage.dart';
 
 class LaunchPage extends StatefulWidget {
   const LaunchPage({super.key});

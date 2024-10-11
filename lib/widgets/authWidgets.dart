@@ -186,14 +186,14 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
   );
 }
 
-SizedBox nameWidget(BuildContext context) {
+SizedBox nameWidget(BuildContext context, String hint) {
   return SizedBox(
     height: 50,
     width: double.infinity,
     child: TextField(
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
-        hintText: 'Name',
+        hintText: hint,
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.onTertiary,
         ),
@@ -230,6 +230,23 @@ SizedBox commentWidget(
                 Icons.send,
                 color: Theme.of(context).primaryColor,
               ))),
+    ),
+  );
+}
+
+SizedBox bioWidget(BuildContext context, String hint) {
+  return SizedBox(
+    // height: 50,
+    width: double.infinity,
+    child: TextField(
+      maxLines: 4,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onTertiary,
+        ),
+      ),
     ),
   );
 }
