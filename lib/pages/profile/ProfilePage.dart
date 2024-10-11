@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/pages/CreatePollPage.dart';
-import 'package:surveva_app/pages/DiscoveryPage.dart';
-import 'package:surveva_app/pages/VotingPage.dart';
+import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
+import 'package:surveva_app/pages/discovery/VotingPage.dart';
 import 'package:surveva_app/pages/profile/AccountPage.dart';
 import 'package:surveva_app/widgets/discoveryWidgets.dart';
 

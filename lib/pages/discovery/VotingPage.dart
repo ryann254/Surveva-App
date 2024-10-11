@@ -19,6 +19,7 @@ class _VotingPageState extends State<VotingPage>
   final profileImg = '';
   bool isLiked = false;
   bool isOwner = false;
+  bool isViolation = false;
   String selectedAnswer = '';
   bool isSubmitted = false;
   TextEditingController commentController = TextEditingController();
@@ -63,6 +64,12 @@ class _VotingPageState extends State<VotingPage>
   removeComment(int index) {
     setState(() {
       comments.removeAt(index);
+    });
+  }
+
+  reportViolation() {
+    setState(() {
+      isViolation = true;
     });
   }
 
@@ -146,7 +153,7 @@ class _VotingPageState extends State<VotingPage>
                                           ),
                                         ),
                                       ),
-                                      moreOptionsModal(context, isOwner),
+                                      moreOptionsModal(context, isOwner, isViolation, reportViolation),
                                     ],
                                   ));
                             },

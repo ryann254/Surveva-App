@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:surveva_app/pages/DiscoveryPage.dart';
+import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:surveva_app/widgets/profileWidgets.dart';
 

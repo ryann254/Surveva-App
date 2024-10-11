@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:surveva_app/pages/DiscoveryPage.dart';
+import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
 import 'package:surveva_app/pages/LaunchPage.dart';
 
 class AnimationPage extends StatefulWidget {

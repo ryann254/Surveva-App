@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:surveva_app/widgets/votingWidgets.dart';
 
 // Sign Up Page Widgets
 SizedBox passwordWidget(
@@ -252,6 +255,47 @@ SizedBox bioWidget(BuildContext context, String hint) {
           color: Theme.of(context).colorScheme.onTertiary,
         ),
       ),
+    ),
+  );
+}
+
+SizedBox reportViolationWidget(
+    BuildContext context, String hint) {
+  return SizedBox(
+    height: 50,
+    width: double.infinity,
+    child: TextField(
+      autofocus: true,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
+          hintText: hint,
+          hintStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onTertiary,
+          ),
+          suffixIcon: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+                  showDialog(context: context, builder: (context) => Stack(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              color: Colors.black.withOpacity(0.8),
+                            ),
+                          ),
+                        ),
+                      successfulReportModal(context),
+                    ],
+                  ));
+              },
+              icon: Icon(
+                Icons.send,
+                color: Theme.of(context).primaryColor,
+              ))),
     ),
   );
 }
