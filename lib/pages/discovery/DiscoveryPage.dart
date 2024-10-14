@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:surveva_app/pages/CreatePollPage.dart';
+import 'package:surveva_app/pages/create%20poll/CreatePollPage.dart';
 import 'package:surveva_app/pages/profile/ProfilePage.dart';
 import 'package:surveva_app/pages/discovery/VotingPage.dart';
 import 'package:surveva_app/widgets/discoveryWidgets.dart';

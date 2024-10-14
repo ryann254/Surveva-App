@@ -240,7 +240,6 @@ SizedBox commentWidget(
 
 SizedBox bioWidget(BuildContext context, String hint) {
   return SizedBox(
-    // height: 50,
     width: double.infinity,
     child: TextField(
       maxLines: 4,
