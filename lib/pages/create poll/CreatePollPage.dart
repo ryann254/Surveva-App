@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
 import 'package:surveva_app/pages/profile/ProfilePage.dart';
+import 'package:surveva_app/widgets/createPollWidgets.dart';
 
 class CreatePollPage extends StatefulWidget {
   const CreatePollPage({super.key});
@@ -94,23 +97,63 @@ class _CreatePollPageState extends State<CreatePollPage> {
                 child: ReorderableListView.builder(
                   itemCount: controllers.length,
                   itemBuilder: (context, index) {
-                    return answerChoice(
-                        context, index == controllers.length - 1, index);
+                    return Dismissible(
+                      key: ValueKey(controllers[index]),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      onDismissed: (direction) {
+                        setState(() {
+                          controllers.removeAt(index);
+                          focusNodes.removeAt(index);
+                        });
+                      },
+                      child: answerChoice(
+                        context,
+                        index == controllers.length - 1,
+                        index,
+                      ),
+                    );
                   },
                   onReorder: (int oldIndex, int newIndex) {
                     setState(() {
                       if (oldIndex < newIndex) {
                         newIndex -= 1;
                       }
-                      final TextEditingController item =
-                          controllers.removeAt(oldIndex);
+                      final TextEditingController item = controllers.removeAt(oldIndex);
                       controllers.insert(newIndex, item);
+                      final FocusNode focusNode = focusNodes.removeAt(oldIndex);
+                      focusNodes.insert(newIndex, focusNode);
                     });
                   },
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  showDialog(context: context, builder: (BuildContext context) {
+                    return Stack(
+                      children: [
+                        GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                            ),
+                            startSurveyModal(context)
+                      ],
+                    );
+                  });
+                },
                 child: Container(
                     width: double.infinity,
                     height: 50,
