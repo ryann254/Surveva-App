@@ -22,10 +22,11 @@ Widget startSurveyModal(BuildContext context) {
                 Container(),
                 GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
                         return Stack(
-                      children: [
-                        GestureDetector(
+                          children: [
+                            GestureDetector(
                               onTap: () {
                                 Navigator.pop(context);
                               },
@@ -38,9 +39,9 @@ Widget startSurveyModal(BuildContext context) {
                               ),
                             ),
                             cancelSurveyModal(context)
-                      ],
-                    );
-                      } ));
+                          ],
+                        );
+                      }));
                     },
                     child: SvgPicture.asset('assets/create poll/close.svg'))
               ],
@@ -158,7 +159,10 @@ Dialog cancelSurveyModal(BuildContext context) {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const DiscoveryPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const DiscoveryPage()));
             },
             child: Container(
               width: double.infinity,
@@ -186,4 +190,111 @@ Dialog cancelSurveyModal(BuildContext context) {
       ),
     ),
   );
+}
+
+Row responsesAnalytics(
+    BuildContext context, Animation<double> _animation, List<int> analytics) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      const Expanded(
+        flex: 2,
+        child: Text(
+          'Responses',
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+        ),
+      ),
+      Expanded(
+        flex: 5,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(analytics.length, (index) {
+                return Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: _getColor(context, index),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                    ),
+                    Text(
+                      '${index + 1}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return SizedBox(
+                  height: 28,
+                  child: Row(
+                    children: List.generate(analytics.length, (index) {
+                      return Flexible(
+                        flex: analytics[index],
+                        child: FractionallySizedBox(
+                          widthFactor: _animation.value,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: _getColor(context, index),
+                              borderRadius: BorderRadius.horizontal(
+                                right: index == analytics.length - 1
+                                    ? const Radius.circular(24)
+                                    : Radius.zero,
+                                left: index == 0
+                                    ? const Radius.circular(24)
+                                    : Radius.zero,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${analytics[index]}%',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      index == 2 ? Theme.of(context).colorScheme.onSurface :Theme.of(context).colorScheme.onPrimary,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      )
+    ],
+  );
+}
+
+Color _getColor(BuildContext context, int index) {
+  switch (index) {
+    case 0:
+      return Theme.of(context).primaryColor;
+    case 1:
+      return Theme.of(context).colorScheme.onSurface;
+    case 2:
+      return Theme.of(context).colorScheme.onPrimary;
+    default:
+      // Add more colors if needed for additional analytics
+      return Theme.of(context).colorScheme.secondary;
+  }
 }

@@ -291,7 +291,7 @@ class _VotingPageState extends State<VotingPage>
             Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 13.0),
                   child: Column(
                     children: [
                       const SizedBox(
