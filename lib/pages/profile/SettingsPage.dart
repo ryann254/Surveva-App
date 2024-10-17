@@ -2,8 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/pages/profile/AboutPage.dart';
 import 'package:surveva_app/pages/profile/EditProfilePage.dart';
+import 'package:surveva_app/pages/profile/HelpPage.dart';
 import 'package:surveva_app/pages/profile/MoreSettingsPage.dart';
+import 'package:surveva_app/pages/profile/ReportPage.dart';
 import 'package:surveva_app/widgets/profileWidgets.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -174,21 +177,30 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           child: Column(
             children: [
-              accountSection(
-                  context,
-                  'assets/profile/help.svg',
-                  'Help',
-                  '',
-                  Icons.arrow_forward_ios_outlined),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpPage()));
+                },
+                child: accountSection(
+                    context,
+                    'assets/profile/help.svg',
+                    'Help',
+                    '',
+                    Icons.arrow_forward_ios_outlined),
+              ),
               const SizedBox(
                 height: 18,
               ),
-              accountSection(
-                  context,
-                  'assets/profile/report_problem.svg',
-                  'Report a problem',
-                  '',
-                  Icons.arrow_forward_ios_outlined)
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ReportPage()));
+                },
+                child: accountSection(
+                    context,
+                    'assets/profile/report_problem.svg',
+                    'Report a problem',
+                    '',
+                    Icons.arrow_forward_ios_outlined))
             ],
           ),
         )
@@ -220,12 +232,17 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           child: Column(
             children: [
-              accountSection(
-                  context,
-                  'assets/profile/about.svg',
-                  'About',
-                  '',
-                  Icons.arrow_forward_ios_outlined),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutPage()));
+                },
+                child: accountSection(
+                    context,
+                    'assets/profile/about.svg',
+                    'About',
+                    '',
+                    Icons.arrow_forward_ios_outlined),
+              ),
             ],
           ),
         )

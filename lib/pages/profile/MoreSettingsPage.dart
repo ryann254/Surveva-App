@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/pages/profile/ChangePasswordPage.dart';
 import 'package:surveva_app/pages/profile/NotificationsPage.dart';
 import 'package:surveva_app/widgets/profileWidgets.dart';
 
@@ -120,11 +121,16 @@ class _MoreSettingsPageState extends State<MoreSettingsPage> {
             child: settingsSection(context, 'Language', 'assets/profile/language.svg',
                 Icons.arrow_forward_ios_outlined),
           ),
-          settingsSection(
-              context,
-              'Change password',
-              'assets/profile/change_password.svg',
-              Icons.arrow_forward_ios_outlined),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePasswordPage()));
+            },
+            child: settingsSection(
+                context,
+                'Change password',
+                'assets/profile/change_password.svg',
+                Icons.arrow_forward_ios_outlined),
+          ),
           const SizedBox(
             height: 24,
           ),

@@ -72,7 +72,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const AuthenticationCodePage()));
+                                          const AuthenticationCodePage(origin: 'forgot')));
                             },
                             child: Container(
                                 width: double.infinity,

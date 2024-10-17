@@ -1,10 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:surveva_app/pages/auth/ResetPasswordPage.dart';
+import 'package:surveva_app/pages/profile/ChangePasswordPage.dart';
+import 'package:surveva_app/pages/profile/MoreSettingsPage.dart';
 
 class AuthenticationCodePage extends StatefulWidget {
-  const AuthenticationCodePage({super.key});
+  const AuthenticationCodePage({super.key, required this.origin});
+  final String origin;
 
   @override
   State<AuthenticationCodePage> createState() => _AuthenticationCodePageState();
@@ -23,7 +28,14 @@ class _AuthenticationCodePageState extends State<AuthenticationCodePage> {
             child: SvgPicture.asset('assets/icons/arrow-left.svg'),
           ),
           onTap: () {
-            Navigator.of(context).pop();
+            if (widget.origin == 'profile') {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ChangePasswordPage()));
+            } else {
+              Navigator.of(context).pop();
+            }
           },
         ),
       ),
@@ -75,10 +87,41 @@ class _AuthenticationCodePageState extends State<AuthenticationCodePage> {
                 const SizedBox(height: 92.0),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ResetPasswordPage()));
+                    if (widget.origin == 'forgot') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ResetPasswordPage()));
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 10, sigmaY: 10),
+                                    child: Container(
+                                      color: Colors.black.withOpacity(0.8),
+                                    ),
+                                  ),
+                                ),
+                                Dialog(
+                                  insetPadding: EdgeInsets.zero,
+                                  child: SizedBox(
+                                    height: 350,
+                                    width: 330,
+                                    child: passwordResetModal(context),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    }
                   },
                   child: Container(
                       width: double.infinity,
@@ -117,6 +160,62 @@ class _AuthenticationCodePageState extends State<AuthenticationCodePage> {
           ),
         ),
       )),
+    );
+  }
+
+  Widget passwordResetModal(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Center(
+          child: SvgPicture.asset('assets/forgot password/success.svg'),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              Text(
+                'Successfully',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(height: 12.0),
+              Text(
+                'You have successfully reset password for your account.',
+                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+        const Spacer(),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const MoreSettingsPage()));
+            },
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Center(
+                child: Text(
+                  'Done',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
