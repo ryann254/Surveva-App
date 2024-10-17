@@ -10,56 +10,83 @@ Dialog confirmProfileChangesModal(BuildContext context, Function() onDiscard) {
       child: Column(
         children: [
           const Padding(
-            padding:  EdgeInsets.all(16.0),
-            child: Column(children: [
-             Text(
-              'Discard changes?',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Text(
+                  'Discard changes?',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                SizedBox(
+                    width: 241,
+                    child: Text(
+                      'You will lose any chanhes you have made',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                      textAlign: TextAlign.center,
+                    )),
+              ],
             ),
-             SizedBox(
-              height: 8,
-            ),
-             SizedBox(
-                width: 241,
-                child: Text(
-                  'You will lose any chanhes you have made',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                  textAlign: TextAlign.center,
-                )),
-            ],),
           ),
-              const SizedBox(height: 16,),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                  onDiscard();
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border: Border(top: BorderSide(color: Theme.of(context).colorScheme.secondary.withOpacity(0.3))),
-                  ),
-                  child: const Center(
-                    child: Text('Discard changes', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff0066CC)),),
-                  ),
+          const SizedBox(
+            height: 16,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+              onDiscard();
+            },
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                border: Border(
+                    top: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.3))),
+              ),
+              child: const Center(
+                child: Text(
+                  'Discard changes',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff0066CC)),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border: Border(top: BorderSide(color: Theme.of(context).colorScheme.secondary.withOpacity(0.3))),
-                  ),
-                  child: const Center(
-                    child: Text('Cancel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff0066CC)),),
-                  ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                border: Border(
+                    top: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.3))),
+              ),
+              child: const Center(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff0066CC)),
                 ),
-              )
+              ),
+            ),
+          )
         ],
       ),
     ),
@@ -93,11 +120,13 @@ Dialog confirmLogoutModal(BuildContext context) {
               style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24,),
+            const SizedBox(
+              height: 24,
+            ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const LaunchPage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const LaunchPage()));
               },
               child: Container(
                 width: double.infinity,
@@ -119,7 +148,9 @@ Dialog confirmLogoutModal(BuildContext context) {
                 ),
               ),
             ),
-            const SizedBox(height: 8,),
+            const SizedBox(
+              height: 8,
+            ),
             GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -147,6 +178,142 @@ Dialog confirmLogoutModal(BuildContext context) {
         ),
       ),
     ),
+  );
+}
+
+Dialog languagePreferencesModal(BuildContext context, List<String> languages,
+    Function(String) selectLanguage, List<String> selectedLanguages) {
+  return Dialog(
+    insetPadding: const EdgeInsets.only(top: 9),
+    alignment: Alignment.bottomCenter,
+    child: StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.90,
+          ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  width: 48,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: const Color(0xffCDCFD0),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                const Center(
+                  child: Text(
+                    'Language Preferences',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                searchWidget(context),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: languages.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectLanguage(languages[index]);
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 12),
+                                  child: Text(languages[index], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+                                ),
+                                selectedLanguages.contains(languages[index])
+                                    ? Container(
+                                        width: 24,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(24),
+                                          color:
+                                              Theme.of(context).colorScheme.primary,
+                                        ),
+                                      )
+                                    : Container(
+                                        width: 24,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(24),
+                                          border: Border.all(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onTertiary),
+                                        ),
+                                      )
+                              ],
+                            ),
+                            Container(
+                              height: 1,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
+
+Widget searchWidget(BuildContext context) {
+  return Row(
+    children: [
+      Expanded(
+        child: SizedBox(
+          height: 44,
+          child: TextField(
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(
+                    top: 3.0, left: 30.0, right: 30.0, bottom: 3.0),
+                hintText: 'Search',
+                hintStyle:
+                    TextStyle(color: Theme.of(context).colorScheme.onTertiary),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(left: 13.0),
+                  child: Icon(
+                    Icons.search_sharp,
+                    color: Theme.of(context).colorScheme.onTertiary,
+                    size: 24,
+                  ),
+                )),
+          ),
+        ),
+      ),
+    ],
   );
 }
 

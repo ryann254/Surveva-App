@@ -97,7 +97,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
 
 
 
-  Row searchWidget(List<Map<String, dynamic>> questions) {
+  Widget searchWidget(List<Map<String, dynamic>> questions) {
     return Row(
       children: [
         Expanded(

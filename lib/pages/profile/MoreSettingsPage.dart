@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/widgets/profileWidgets.dart';
 
 class MoreSettingsPage extends StatefulWidget {
   const MoreSettingsPage({super.key});
@@ -10,7 +13,62 @@ class MoreSettingsPage extends StatefulWidget {
 
 class _MoreSettingsPageState extends State<MoreSettingsPage> {
   String colorMode = 'Original';
+    // TODO: Get languages from API
+  List<String> languages = [
+    'English',
+    'Spanish',
+    'French',
+    'German',
+    'Italian',
+    'Portuguese',
+    'Russian',
+    'Chinese',
+    'Japanese',
+    'Korean',
+    'Arabic',
+    'Hindi',
+    'Bengali',
+    'Punjabi',
+    'Urdu',
+    'Indonesian',
+    'Malay',
+    'Thai',
+    'Vietnamese',
+    'Filipino',
+    'Dutch',
+    'Swedish',
+    'Norwegian',
+    'Danish',
+    'Finnish',
+    'Estonian',
+    'Latvian',
+    'Lithuanian',
+    'Polish',
+    'Czech',
+    'Slovak',
+    'Slovenian',
+    'Croatian',
+    'Bosnian',
+    'Macedonian',
+    'Romanian',
+    'Bulgarian',
+    'Serbian',
+    'Montenegrin',
+    'Albanian',
+    'Maltese'
+  ];
+  List<String> selectedLanguages = [];
 
+  selectLangugage(String language) {
+    setState(() {
+      if (selectedLanguages.contains(language)) {
+      selectedLanguages.remove(language);
+      } else {
+        selectedLanguages.add(language);
+      }
+    });
+  }
+  
   changeColorMode(String mode) {
     setState(() {
       colorMode = mode;
@@ -31,8 +89,31 @@ class _MoreSettingsPageState extends State<MoreSettingsPage> {
               'Notifications',
               'assets/profile/notifications.svg',
               Icons.arrow_forward_ios_outlined),
-          settingsSection(context, 'Language', 'assets/profile/language.svg',
-              Icons.arrow_forward_ios_outlined),
+          GestureDetector(
+            onTap: () {
+              showDialog(context: context, builder: (BuildContext context) {
+                    return Stack(
+                      children: [
+                        GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                            ),
+                            languagePreferencesModal(context, languages, selectLangugage, selectedLanguages)
+                      ],
+                    );
+                  });
+            },
+            child: settingsSection(context, 'Language', 'assets/profile/language.svg',
+                Icons.arrow_forward_ios_outlined),
+          ),
           settingsSection(
               context,
               'Change password',

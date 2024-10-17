@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:surveva_app/pages/LaunchPage.dart';
 import 'package:surveva_app/pages/profile/EditProfilePage.dart';
 import 'package:surveva_app/pages/profile/MoreSettingsPage.dart';
 import 'package:surveva_app/widgets/profileWidgets.dart';
