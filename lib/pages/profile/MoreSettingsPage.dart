@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/pages/profile/NotificationsPage.dart';
 import 'package:surveva_app/widgets/profileWidgets.dart';
 
 class MoreSettingsPage extends StatefulWidget {
@@ -84,11 +85,16 @@ class _MoreSettingsPageState extends State<MoreSettingsPage> {
           const SizedBox(
             height: 37,
           ),
-          settingsSection(
-              context,
-              'Notifications',
-              'assets/profile/notifications.svg',
-              Icons.arrow_forward_ios_outlined),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsPage()));
+            },
+            child: settingsSection(
+                context,
+                'Notifications',
+                'assets/profile/notifications.svg',
+                Icons.arrow_forward_ios_outlined),
+          ),
           GestureDetector(
             onTap: () {
               showDialog(context: context, builder: (BuildContext context) {
