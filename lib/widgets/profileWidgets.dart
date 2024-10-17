@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:surveva_app/pages/LaunchPage.dart';
 
 Dialog confirmProfileChangesModal(BuildContext context, Function() onDiscard) {
   return Dialog(
@@ -60,6 +61,90 @@ Dialog confirmProfileChangesModal(BuildContext context, Function() onDiscard) {
                 ),
               )
         ],
+      ),
+    ),
+  );
+}
+
+Dialog confirmLogoutModal(BuildContext context) {
+  return Dialog(
+    insetPadding: EdgeInsets.zero,
+    child: SizedBox(
+      height: 275,
+      width: 330,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 12,
+            ),
+            const Text(
+              'Logout',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            const Text(
+              'Are you sure you want to log out?',
+              style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24,),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const LaunchPage()));
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(color: Colors.red),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: const Center(
+                  child: Text(
+                    'Log out',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8,),
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Center(
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );

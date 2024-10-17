@@ -1,7 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/pages/LaunchPage.dart';
 import 'package:surveva_app/pages/profile/EditProfilePage.dart';
+import 'package:surveva_app/pages/profile/MoreSettingsPage.dart';
+import 'package:surveva_app/widgets/profileWidgets.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -51,7 +55,25 @@ class _SettingsPageState extends State<SettingsPage> {
             const Spacer(),
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const LaunchPage()));
+                showDialog(context: context, builder: (BuildContext context) {
+                    return Stack(
+                      children: [
+                        GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                            ),
+                            confirmLogoutModal(context)
+                      ],
+                    );
+                  });
               },
               child: Row(
                 children: [
@@ -111,12 +133,17 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 12,
               ),
-              accountSection(
-                  context,
-                  'assets/profile/settings.svg',
-                  'Settings',
-                  'Notifications, Language, Password,...',
-                  Icons.arrow_forward_ios_outlined)
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MoreSettingsPage()));
+                },
+                child: accountSection(
+                    context,
+                    'assets/profile/settings.svg',
+                    'Settings',
+                    'Notifications, Language, Password,...',
+                    Icons.arrow_forward_ios_outlined),
+              )
             ],
           ),
         )
