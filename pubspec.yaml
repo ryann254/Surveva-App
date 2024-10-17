@@ -67,6 +67,7 @@ flutter:
     - assets/launch page/
     - assets/discovery/
     - assets/create poll/
+    - assets/payments/
     - assets/profile/
     - assets/auth/
     - assets/forgot password/
