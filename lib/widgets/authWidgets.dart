@@ -49,7 +49,7 @@ SizedBox emailWidget({Function? validateEmail, required BuildContext context}) {
   );
 }
 
-Row genderWidget(String gender, Function isGender, BuildContext context) {
+Row genderWidget(String gender, Function isGender, BuildContext context, bool showOther) {
   return Row(
     children: [
       Expanded(
@@ -94,9 +94,9 @@ Row genderWidget(String gender, Function isGender, BuildContext context) {
                   ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.onPrimary,
               border: Border.all(color: Theme.of(context).colorScheme.tertiary),
-              borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(24),
-                  bottomRight: Radius.circular(24)),
+              borderRadius: BorderRadius.only(
+                  topRight: showOther ? Radius.zero : const Radius.circular(24),
+                  bottomRight: showOther ? Radius.zero : const Radius.circular(24)),
             ),
             child: Center(
               child: Text(
@@ -109,7 +109,37 @@ Row genderWidget(String gender, Function isGender, BuildContext context) {
             ),
           ),
         ),
-      )
+      ),
+      showOther ?
+      Expanded(
+        flex: 1,
+        child: GestureDetector(
+          onTap: () {
+            isGender('Other');
+          },
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: gender == 'Other'
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onPrimary,
+              border: Border.all(color: Theme.of(context).colorScheme.tertiary),
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(24),
+                  bottomRight: Radius.circular(24)),
+            ),
+            child: Center(
+              child: Text(
+                'Other',
+                style: TextStyle(
+                    color: gender == 'Other'
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onTertiary),
+              ),
+            ),
+          ),
+        ),
+      ) : const SizedBox(),
     ],
   );
 }
@@ -179,7 +209,7 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
               dob.isNotEmpty ? dob.substring(0, 10) : 'Date of Birth',
               style: TextStyle(
                 fontSize: 15,
-                color: Theme.of(context).colorScheme.tertiary,
+                color: dob.isEmpty ? Theme.of(context).colorScheme.onTertiary : Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -195,6 +225,23 @@ SizedBox nameWidget(BuildContext context, String hint) {
     height: 50,
     width: double.infinity,
     child: TextField(
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onTertiary,
+        ),
+      ),
+    ),
+  );
+}
+
+SizedBox phoneWidget(BuildContext context, String hint) {
+  return SizedBox(
+    height: 50,
+    width: double.infinity,
+    child: TextField(
+      keyboardType: TextInputType.phone,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
         hintText: hint,

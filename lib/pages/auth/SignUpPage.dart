@@ -79,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     confirmPasswordWidget(
                         obscureConfirmPassword, isObscureConfirmPassword, context),
                     const SizedBox(height: 15),
-                    genderWidget(gender, isGender, context),
+                    genderWidget(gender, isGender, context, false),
                     const SizedBox(
                       height: 12,
                     ),

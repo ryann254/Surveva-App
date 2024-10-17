@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/pages/LaunchPage.dart';
+import 'package:surveva_app/pages/profile/EditProfilePage.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -96,12 +97,17 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           child: Column(
             children: [
-              accountSection(
-                  context,
-                  'assets/profile/person.svg',
-                  'Personal Information',
-                  'Age, Date of Birth, E-Mail, Phone,...',
-                  Icons.arrow_forward_ios_outlined),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const EditProfilePage()));
+                },
+                child: accountSection(
+                    context,
+                    'assets/profile/person.svg',
+                    'Personal Information',
+                    'Age, Date of Birth, E-Mail, Phone,...',
+                    Icons.arrow_forward_ios_outlined),
+              ),
               const SizedBox(
                 height: 12,
               ),
