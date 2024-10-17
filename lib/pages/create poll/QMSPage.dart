@@ -158,20 +158,48 @@ class _QMSPageState extends State<QMSPage> with SingleTickerProviderStateMixin {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
+                            // Incase a user goes back to a previous question to change their answer
                             if (currentIndex < selectedAnswers.length) {
                               selectedAnswers[currentIndex] = answer;
                             } else {
                               selectedAnswers.add(answer);
                             }
+
                             if (currentIndex < questions.length - 1) {
                               currentIndex++;
+                            }
+
+                            if (currentIndex == questions.length - 1) {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Stack(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 10, sigmaY: 10),
+                                            child: Container(
+                                              color:
+                                                  Colors.black.withOpacity(0.8),
+                                            ),
+                                          ),
+                                        ),
+                                        endSurveyModal(context)
+                                      ],
+                                    );
+                                  });
                             }
                           });
                         },
                         child: Container(
                           padding: const EdgeInsets.all(12.5),
                           decoration: BoxDecoration(
-                            color: selectedAnswers.length > currentIndex && selectedAnswers[currentIndex] == answer
+                            color: selectedAnswers.length > currentIndex &&
+                                    selectedAnswers[currentIndex] == answer
                                 ? Theme.of(context).colorScheme.onPrimary
                                 : Theme.of(context).colorScheme.surface,
                           ),
@@ -181,17 +209,22 @@ class _QMSPageState extends State<QMSPage> with SingleTickerProviderStateMixin {
                             children: [
                               Text(
                                 answer,
-                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
                               ),
                               Container(
                                 width: 24,
                                 height: 24,
                                 decoration: BoxDecoration(
-                                  color: selectedAnswers.length > currentIndex && selectedAnswers[currentIndex] == answer
+                                  color: selectedAnswers.length >
+                                              currentIndex &&
+                                          selectedAnswers[currentIndex] ==
+                                              answer
                                       ? Theme.of(context).primaryColor
                                       : Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(24),
-                                  border: Border.all(color: const Color(0xffDDDAD3), width: 1),
+                                  border: Border.all(
+                                      color: const Color(0xffDDDAD3), width: 1),
                                 ),
                               )
                             ],
@@ -311,7 +344,8 @@ class _QMSPageState extends State<QMSPage> with SingleTickerProviderStateMixin {
               onTap: () {
                 setState(() {
                   currentIndex--;
-                });;
+                });
+                ;
               },
             )
           : null,

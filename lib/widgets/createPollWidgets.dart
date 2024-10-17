@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:surveva_app/pages/create%20poll/QMSPage.dart';
 import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
+import 'package:surveva_app/pages/payments/PremiumPage.dart';
 
 Widget startSurveyModal(BuildContext context) {
   return Dialog(
@@ -90,6 +91,148 @@ Widget startSurveyModal(BuildContext context) {
                   ),
                 ),
               ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget endSurveyModal(BuildContext context) {
+  return Dialog(
+    insetPadding: EdgeInsets.zero,
+    child: SizedBox(
+      height: 535,
+      width: 330,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 9.0, right: 9.0, top: 9.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  const DiscoveryPage()));
+                    },
+                    child: SvgPicture.asset('assets/create poll/close.svg'))
+              ],
+            ),
+          ),
+          Center(
+            child: SvgPicture.asset('assets/create poll/poll_success.svg'),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+            child: Column(
+              children: [
+                const Text(
+                  'Your Survey has been posted!',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                const Text(
+                  'Go beyond limitations and unlock additional voting options and insights into user response analytics.',
+                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset('assets/create poll/results.svg'),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          const Text(
+                            'Get your result faster',
+                            style: TextStyle(
+                                fontSize: 14.0, fontWeight: FontWeight.w400),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        children: [
+                          SvgPicture.asset('assets/create poll/statistics.svg'),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          const Text(
+                            'Get more statistical analyses',
+                            style: TextStyle(
+                                fontSize: 14.0, fontWeight: FontWeight.w400),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        children: [
+                          SvgPicture.asset('assets/create poll/more.svg'),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          const Text(
+                            'Get more Surveva',
+                            style: TextStyle(
+                                fontSize: 14.0, fontWeight: FontWeight.w400),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const PremiumPage()));
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Premium',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -265,8 +408,9 @@ Row responsesAnalytics(
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  color:
-                                      index == 2 ? Theme.of(context).colorScheme.onSurface :Theme.of(context).colorScheme.onPrimary,
+                                  color: index == 2
+                                      ? Theme.of(context).colorScheme.onSurface
+                                      : Theme.of(context).colorScheme.onPrimary,
                                 ),
                               ),
                             ),
