@@ -4,6 +4,7 @@ import 'package:surveva_app/pages/create%20poll/CreatePollPage.dart';
 import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
 import 'package:surveva_app/pages/discovery/VotingPage.dart';
 import 'package:surveva_app/pages/profile/AccountPage.dart';
+import 'package:surveva_app/pages/profile/SettingsPage.dart';
 import 'package:surveva_app/widgets/discoveryWidgets.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -86,7 +87,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
+                              },
                               icon: const Icon(
                                 Icons.settings,
                                 size: 34,
