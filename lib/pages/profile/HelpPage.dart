@@ -125,6 +125,7 @@ AppBar appBar(BuildContext context) {
         child: SvgPicture.asset('assets/create poll/back_button.svg'),
       ),
       onTap: () {
+        FocusScope.of(context).unfocus(); // Remove focus from any text field
         Navigator.pop(context);
       },
     ),
