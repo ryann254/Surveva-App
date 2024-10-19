@@ -294,13 +294,7 @@ AppBar appBar(BuildContext context) {
     leading: GestureDetector(
       child: Padding(
         padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-        child: ColorFiltered(
-          colorFilter: ColorFilter.mode(
-            Theme.of(context).colorScheme.onPrimary,
-            BlendMode.srcIn,
-          ),
-          child: SvgPicture.asset('assets/create poll/back_button.svg'),
-        ),
+        child: SvgPicture.asset('assets/create poll/back_button.svg'),
       ),
       onTap: () {
         Navigator.pop(context);
