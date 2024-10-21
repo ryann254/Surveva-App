@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:surveva_app/pages/AnimationPage.dart';
-import 'package:surveva_app/theme/app_theme.dart';
+import 'package:surveva_app/config/appTheme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

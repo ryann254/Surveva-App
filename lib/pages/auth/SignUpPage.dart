@@ -18,6 +18,8 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _promotionalEmails = false;
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -72,9 +74,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     const SizedBox(height: 15),
                     dobWidget(context, isDob, dob),
                     const SizedBox(height: 15),
-                    emailWidget(context: context),
+                    emailWidget(context: context, emailController: emailController),
                     const SizedBox(height: 15),
-                    passwordWidget(obscurePassword, isObscurePassword, context),
+                    passwordWidget(obscurePassword, isObscurePassword, context, passwordController),
                     const SizedBox(height: 15),
                     confirmPasswordWidget(
                         obscureConfirmPassword, isObscureConfirmPassword, context),

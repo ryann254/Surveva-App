@@ -13,6 +13,7 @@ class ChangePasswordPage extends StatefulWidget {
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  TextEditingController passwordController = TextEditingController();
 
   isObscurePassword() {
     setState(() {
@@ -45,7 +46,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
-              passwordWidget(obscurePassword, isObscurePassword, context),
+              passwordWidget(obscurePassword, isObscurePassword, context, passwordController),
               const SizedBox(height: 18),
               confirmPasswordWidget(
                   obscureConfirmPassword, isObscureConfirmPassword, context),

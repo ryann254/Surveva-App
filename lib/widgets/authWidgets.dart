@@ -7,11 +7,12 @@ import 'package:surveva_app/widgets/votingWidgets.dart';
 
 // Sign Up Page Widgets
 SizedBox passwordWidget(
-    bool obscurePassword, Function isObscurePassword, BuildContext context) {
+    bool obscurePassword, Function isObscurePassword, BuildContext context, TextEditingController? passwordController) {
   return SizedBox(
     height: 50,
     width: double.infinity,
     child: TextField(
+      controller: passwordController,
       obscureText: obscurePassword,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -30,11 +31,12 @@ SizedBox passwordWidget(
   );
 }
 
-SizedBox emailWidget({Function? validateEmail, required BuildContext context}) {
+SizedBox emailWidget({Function? validateEmail, required BuildContext context, TextEditingController? emailController}) {
   return SizedBox(
     height: 50,
     width: double.infinity,
     child: TextField(
+      controller: emailController,
       onChanged: (value) {
         validateEmail?.call();
       },

@@ -1,5 +1,10 @@
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/functions/auth/login.dart';
+import 'package:surveva_app/models/userWIthToken.model.dart';
 import 'package:surveva_app/pages/auth/ForgotPasswordPage.dart';
 import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
 import 'package:surveva_app/pages/auth/SignUpPage.dart';
@@ -14,6 +19,20 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool obscurePassword = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  Future<void> sendLoginRequest() async {
+    // Dismiss the keyboard
+    FocusScope.of(context).unfocus();
+
+    try {
+      UserWithToken userWithToken = await login(email: emailController.text, password: passwordController.text);
+      print(userWithToken);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 
   isObscurePassword() {
     setState(() {
@@ -46,17 +65,18 @@ class _LoginPageState extends State<LoginPage> {
                                 fontSize: 24, fontWeight: FontWeight.w500),
                             textAlign: TextAlign.center),
                         const SizedBox(height: 48),
-                        emailWidget(context: context),
+                        emailWidget(context: context, emailController: emailController),
                         const SizedBox(height: 15),
-                        passwordWidget(obscurePassword, isObscurePassword, context),
+                        passwordWidget(obscurePassword, isObscurePassword, context, passwordController),
                         const SizedBox(height: 18),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const DiscoveryPage()));
+                            sendLoginRequest();
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             const DiscoveryPage()));
                           },
                           child: Container(
                               width: double.infinity,

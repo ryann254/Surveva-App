@@ -15,8 +15,8 @@ class UserWithToken {
   factory UserWithToken.fromJson(Map<String, dynamic> json) {
     return UserWithToken(
       user: User.fromJson(json['user']),
-      accessToken: Token.fromJson(json['accessToken']),
-      refreshToken: Token.fromJson(json['refreshToken']),
+      accessToken: Token.fromJson(json['tokens']['access']),
+      refreshToken: Token.fromJson(json['tokens']['refresh']),
     );
   }
 }

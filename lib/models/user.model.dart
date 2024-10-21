@@ -1,11 +1,11 @@
 
 class Location {
   String country;
-  String city;
+  String continent;
 
   Location({
     required this.country,
-    required this.city,
+    required this.continent,
   });
 }
 
@@ -41,14 +41,14 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
+      id: json['_id'],
       username: json['username'],
       email: json['email'],
       role: json['role'],
       dob: json['dob'],
       location: Location(
         country: json['location']['country'],
-        city: json['location']['city'],
+        continent: json['location']['continent'],
       ),
       emailVerified: json['emailVerified'],
       language: json['language'],

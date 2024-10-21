@@ -15,6 +15,7 @@ class ResetPasswordPage extends StatefulWidget {
 class _ResetPasswordPageState extends State<ResetPasswordPage> {
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  TextEditingController passwordController = TextEditingController();
 
   isObscurePassword() {
     setState(() {
@@ -66,7 +67,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 ),
               ),
               const SizedBox(height: 36.0),
-              passwordWidget(obscurePassword, isObscurePassword, context),
+              passwordWidget(obscurePassword, isObscurePassword, context, passwordController),
               const SizedBox(height: 18.0),
               confirmPasswordWidget(
                   obscureConfirmPassword, isObscureConfirmPassword, context),
