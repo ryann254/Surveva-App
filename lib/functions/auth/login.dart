@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:surveva_app/config/globals.dart';
 import 'package:surveva_app/models/userWIthToken.model.dart';
+import 'package:surveva_app/utils/handleError.dart';
 
 /// Login with email and password
 ///
@@ -19,7 +20,9 @@ Future<UserWithToken> login({required String email, required String password}) a
     HttpHeaders.contentTypeHeader: 'application/json',
   };
   final Uri uri = Uri.http(baseUrl, '/api/v1/auth/login');
-  bool emailIsValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+  bool emailIsValid = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+  ).hasMatch(email);
   if (!emailIsValid) {
     throw Exception('Invalid email');
   }
@@ -31,7 +34,6 @@ Future<UserWithToken> login({required String email, required String password}) a
     final userWithToken = UserWithToken.fromJson(jsonDecode(response.body));
     return userWithToken;
   } else {
-    // TODO: Handle different status codes
-    throw Exception('Failed to login');
+    throw handleError(response.body);
   }
 }

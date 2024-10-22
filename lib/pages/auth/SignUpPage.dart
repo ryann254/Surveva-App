@@ -18,6 +18,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _promotionalEmails = false;
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  String passwordErrorMessage = '';
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -74,12 +75,21 @@ class _SignUpPageState extends State<SignUpPage> {
                     const SizedBox(height: 15),
                     dobWidget(context, isDob, dob),
                     const SizedBox(height: 15),
-                    emailWidget(context: context, emailController: emailController),
+                    emailWidget(
+                        context: context,
+                        emailController: emailController,
+                        onChanged: (String email) => {}),
                     const SizedBox(height: 15),
-                    passwordWidget(obscurePassword, isObscurePassword, context, passwordController),
+                    passwordWidget(
+                        obscurePassword,
+                        isObscurePassword,
+                        context,
+                        passwordController,
+                        passwordErrorMessage,
+                        (String password) => {}, false),
                     const SizedBox(height: 15),
-                    confirmPasswordWidget(
-                        obscureConfirmPassword, isObscureConfirmPassword, context),
+                    confirmPasswordWidget(obscureConfirmPassword,
+                        isObscureConfirmPassword, context),
                     const SizedBox(height: 15),
                     genderWidget(gender, isGender, context, false),
                     const SizedBox(

@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,19 +6,41 @@ import 'package:surveva_app/widgets/votingWidgets.dart';
 
 // Sign Up Page Widgets
 SizedBox passwordWidget(
-    bool obscurePassword, Function isObscurePassword, BuildContext context, TextEditingController? passwordController) {
+    bool obscurePassword,
+    Function isObscurePassword,
+    BuildContext context,
+    TextEditingController? passwordController,
+    String errorText, Function(String) onChanged, 
+    bool isSuccess) {
   return SizedBox(
-    height: 50,
+    height: 70,
     width: double.infinity,
     child: TextField(
       controller: passwordController,
       obscureText: obscurePassword,
+      onChanged: onChanged,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
           hintText: 'Password',
           hintStyle: TextStyle(
             color: Theme.of(context).colorScheme.onTertiary,
           ),
+          errorText: errorText.isNotEmpty ? errorText : null,
+          errorStyle: const TextStyle(
+            color: Colors.red,
+          ),
+          enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: isSuccess ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.tertiary,
+          ),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: isSuccess ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
+          ),
+          borderRadius: BorderRadius.circular(24),
+        ),
           suffixIcon: IconButton(
               onPressed: () {
                 isObscurePassword();
@@ -31,27 +52,49 @@ SizedBox passwordWidget(
   );
 }
 
-SizedBox emailWidget({Function? validateEmail, required BuildContext context, TextEditingController? emailController}) {
+SizedBox emailWidget(
+    {Function? validateEmail,
+    required BuildContext context,
+    TextEditingController? emailController,
+    String errorText = '',
+    Function(String)? onChanged,
+    bool isSuccess = false}) {
   return SizedBox(
-    height: 50,
+    height: 70,
     width: double.infinity,
     child: TextField(
+      autofillHints: [],
       controller: emailController,
-      onChanged: (value) {
-        validateEmail?.call();
-      },
+      onChanged: onChanged,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
         hintText: 'E-Mail',
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.onTertiary,
         ),
+        errorText: errorText.isNotEmpty ? errorText : null,
+        errorStyle: const TextStyle(
+          color: Colors.red,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: isSuccess ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.tertiary,
+          ),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: isSuccess ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
+          ),
+          borderRadius: BorderRadius.circular(24),
+        ),
       ),
     ),
   );
 }
 
-Row genderWidget(String gender, Function isGender, BuildContext context, bool showOther) {
+Row genderWidget(
+    String gender, Function isGender, BuildContext context, bool showOther) {
   return Row(
     children: [
       Expanded(
@@ -98,7 +141,8 @@ Row genderWidget(String gender, Function isGender, BuildContext context, bool sh
               border: Border.all(color: Theme.of(context).colorScheme.tertiary),
               borderRadius: BorderRadius.only(
                   topRight: showOther ? Radius.zero : const Radius.circular(24),
-                  bottomRight: showOther ? Radius.zero : const Radius.circular(24)),
+                  bottomRight:
+                      showOther ? Radius.zero : const Radius.circular(24)),
             ),
             child: Center(
               child: Text(
@@ -112,36 +156,38 @@ Row genderWidget(String gender, Function isGender, BuildContext context, bool sh
           ),
         ),
       ),
-      showOther ?
-      Expanded(
-        flex: 1,
-        child: GestureDetector(
-          onTap: () {
-            isGender('Other');
-          },
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              color: gender == 'Other'
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onPrimary,
-              border: Border.all(color: Theme.of(context).colorScheme.tertiary),
-              borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(24),
-                  bottomRight: Radius.circular(24)),
-            ),
-            child: Center(
-              child: Text(
-                'Other',
-                style: TextStyle(
+      showOther
+          ? Expanded(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () {
+                  isGender('Other');
+                },
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
                     color: gender == 'Other'
-                        ? Theme.of(context).colorScheme.onPrimary
-                        : Theme.of(context).colorScheme.onTertiary),
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.onPrimary,
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.tertiary),
+                    borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(24),
+                        bottomRight: Radius.circular(24)),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Other',
+                      style: TextStyle(
+                          color: gender == 'Other'
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : Theme.of(context).colorScheme.onTertiary),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
-      ) : const SizedBox(),
+            )
+          : const SizedBox(),
     ],
   );
 }
@@ -211,7 +257,9 @@ SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
               dob.isNotEmpty ? dob.substring(0, 10) : 'Date of Birth',
               style: TextStyle(
                 fontSize: 15,
-                color: dob.isEmpty ? Theme.of(context).colorScheme.onTertiary : Theme.of(context).colorScheme.onSurface,
+                color: dob.isEmpty
+                    ? Theme.of(context).colorScheme.onTertiary
+                    : Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -297,7 +345,8 @@ SizedBox bioWidget(BuildContext context, String hint) {
         LengthLimitingTextInputFormatter(150),
       ],
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
+        contentPadding:
+            const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
         hintText: hint,
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.onTertiary,
@@ -307,8 +356,7 @@ SizedBox bioWidget(BuildContext context, String hint) {
   );
 }
 
-SizedBox reportViolationWidget(
-    BuildContext context, String hint) {
+SizedBox reportViolationWidget(BuildContext context, String hint) {
   return SizedBox(
     height: 50,
     width: double.infinity,
@@ -323,22 +371,25 @@ SizedBox reportViolationWidget(
           suffixIcon: IconButton(
               onPressed: () {
                 Navigator.pop(context);
-                  showDialog(context: context, builder: (context) => Stack(
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child: Container(
-                              color: Colors.black.withOpacity(0.8),
+                showDialog(
+                    context: context,
+                    builder: (context) => Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      successfulReportModal(context),
-                    ],
-                  ));
+                            successfulReportModal(context),
+                          ],
+                        ));
               },
               icon: Icon(
                 Icons.send,

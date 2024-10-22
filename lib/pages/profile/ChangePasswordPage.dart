@@ -13,6 +13,7 @@ class ChangePasswordPage extends StatefulWidget {
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  String passwordErrorMessage = '';
   TextEditingController passwordController = TextEditingController();
 
   isObscurePassword() {
@@ -46,7 +47,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
-              passwordWidget(obscurePassword, isObscurePassword, context, passwordController),
+              passwordWidget(
+                  obscurePassword,
+                  isObscurePassword,
+                  context,
+                  passwordController,
+                  passwordErrorMessage,
+                  (String password) => {}, false),
               const SizedBox(height: 18),
               confirmPasswordWidget(
                   obscureConfirmPassword, isObscureConfirmPassword, context),
@@ -70,8 +77,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     child: Text(
                       'Change Password',
                       style: TextStyle(
-                          color:
-                              Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 16,
                           fontWeight: FontWeight.w600),
                     ),

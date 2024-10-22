@@ -1,14 +1,13 @@
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:surveva_app/functions/auth/login.dart';
-import 'package:surveva_app/models/userWIthToken.model.dart';
 import 'package:surveva_app/pages/auth/ForgotPasswordPage.dart';
-import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
 import 'package:surveva_app/pages/auth/SignUpPage.dart';
+import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
+import 'package:surveva_app/models/error.model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,16 +20,90 @@ class _LoginPageState extends State<LoginPage> {
   bool obscurePassword = true;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool isLoginButtonEnabled = false;
+  String emailErrorMessage = '';
+  String passwordErrorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void _updateEmailState(String email) {
+    setState(() {
+      emailErrorMessage = _getEmailErrorMessage(email);
+      isLoginButtonEnabled = _isEmailValid(email) &&
+          _isPasswordValid(passwordController.text);
+    });
+  }
+
+  void _updatePasswordState(String password) {
+    setState(() {
+      passwordErrorMessage = _getPasswordErrorMessage(password);
+      isLoginButtonEnabled = _isEmailValid(emailController.text) &&
+          passwordErrorMessage.isEmpty;
+    });
+  }
+
+  bool _isEmailValid(String email) {
+    if (email.isEmpty) return false;
+    return RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    ).hasMatch(email);
+  }
+
+  bool _isPasswordValid(String password) {
+    return RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$'
+    ).hasMatch(password);
+  }
+
+  String _getEmailErrorMessage(String email) {
+    if (email.isEmpty) return '';
+    if (!_isEmailValid(email)) return 'Invalid email';
+    return '';
+  }
+
+  String _getPasswordErrorMessage(String password) {
+    if (password.isEmpty) return '';
+    List<String> missingCriteria = [];
+    if (!password.contains(RegExp(r'[A-Z]'))) missingCriteria.add('an uppercase letter');
+    if (!password.contains(RegExp(r'[a-z]'))) missingCriteria.add('a lowercase letter');
+    if (!password.contains(RegExp(r'\d'))) missingCriteria.add('a number');
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) missingCriteria.add('a special character');
+    if (password.length < 8) missingCriteria.add('at least 8 characters');
+
+    if (missingCriteria.isEmpty) return '';
+    return 'Password must contain: ${missingCriteria.join(', ')}';
+  }
 
   Future<void> sendLoginRequest() async {
     // Dismiss the keyboard
     FocusScope.of(context).unfocus();
+    setState(() {
+      emailErrorMessage = '';
+      passwordErrorMessage = '';
+      isLoginButtonEnabled = false;
+    });
 
     try {
-      UserWithToken userWithToken = await login(email: emailController.text, password: passwordController.text);
-      print(userWithToken);
-    } catch (e) {
-      log(e.toString());
+      await login(email: emailController.text, password: passwordController.text);
+      emailController.clear();
+      passwordController.clear();
+      log('Logged in successfully');
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const DiscoveryPage()));
+    } catch (err) {
+      Error errorInstance = err as Error;
+      emailErrorMessage = errorInstance.message;
+      passwordErrorMessage = errorInstance.message;
     }
   }
 
@@ -42,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    log(_isEmailValid(emailController.text).toString());
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
@@ -65,33 +139,44 @@ class _LoginPageState extends State<LoginPage> {
                                 fontSize: 24, fontWeight: FontWeight.w500),
                             textAlign: TextAlign.center),
                         const SizedBox(height: 48),
-                        emailWidget(context: context, emailController: emailController),
+                        emailWidget(
+                          context: context, 
+                          emailController: emailController,
+                          errorText: emailErrorMessage,
+                          onChanged: _updateEmailState,
+                          isSuccess: _isEmailValid(emailController.text),
+                        ),
                         const SizedBox(height: 15),
-                        passwordWidget(obscurePassword, isObscurePassword, context, passwordController),
+                        passwordWidget(
+                          obscurePassword,
+                          isObscurePassword,
+                          context,
+                          passwordController,
+                          passwordErrorMessage,
+                          _updatePasswordState,
+                          _isPasswordValid(passwordController.text),
+                        ),
                         const SizedBox(height: 18),
                         GestureDetector(
-                          onTap: () {
-                            sendLoginRequest();
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) =>
-                            //             const DiscoveryPage()));
-                          },
+                          onTap: isLoginButtonEnabled ? sendLoginRequest : null,
                           child: Container(
                               width: double.infinity,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color: isLoginButtonEnabled
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).colorScheme.tertiary,
                                 borderRadius: BorderRadius.circular(24),
                               ),
                               child: Center(
                                 child: Text(
                                   'Log In',
                                   style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary,
+                                      color: isLoginButtonEnabled
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary
+                                          : Theme.of(context).colorScheme.onTertiary,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -146,8 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             const Text(
                               'Don\'t have an account?',
-                              style: TextStyle(
-                                  fontSize: 14),
+                              style: TextStyle(fontSize: 14),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(
@@ -164,10 +248,10 @@ class _LoginPageState extends State<LoginPage> {
                               child: const Text(
                                 'Sign Up',
                                 style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.underline,
-                                    ),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  decoration: TextDecoration.underline,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
