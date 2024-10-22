@@ -10,10 +10,11 @@ SizedBox passwordWidget(
     Function isObscurePassword,
     BuildContext context,
     TextEditingController? passwordController,
-    String errorText, Function(String) onChanged, 
+    String errorText,
+    Function(String) onChanged,
     bool isSuccess) {
   return SizedBox(
-    height: 70,
+    height: errorText.isNotEmpty ? 70 : 50,
     width: double.infinity,
     child: TextField(
       controller: passwordController,
@@ -30,17 +31,21 @@ SizedBox passwordWidget(
             color: Colors.red,
           ),
           enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: isSuccess ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.tertiary,
+            borderSide: BorderSide(
+              color: isSuccess
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.tertiary,
+            ),
+            borderRadius: BorderRadius.circular(24),
           ),
-          borderRadius: BorderRadius.circular(24),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: isSuccess ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: isSuccess
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSurface,
+            ),
+            borderRadius: BorderRadius.circular(24),
           ),
-          borderRadius: BorderRadius.circular(24),
-        ),
           suffixIcon: IconButton(
               onPressed: () {
                 isObscurePassword();
@@ -60,7 +65,7 @@ SizedBox emailWidget(
     Function(String)? onChanged,
     bool isSuccess = false}) {
   return SizedBox(
-    height: 70,
+    height: errorText.isNotEmpty ? 70 : 50,
     width: double.infinity,
     child: TextField(
       autofillHints: [],
@@ -78,13 +83,17 @@ SizedBox emailWidget(
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: isSuccess ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.tertiary,
+            color: isSuccess
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.tertiary,
           ),
           borderRadius: BorderRadius.circular(24),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: isSuccess ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
+            color: isSuccess
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSurface,
           ),
           borderRadius: BorderRadius.circular(24),
         ),
@@ -192,18 +201,45 @@ Row genderWidget(
   );
 }
 
-SizedBox confirmPasswordWidget(bool obscureConfirmPassword,
-    Function isObscureConfirmPassword, BuildContext context) {
+SizedBox confirmPasswordWidget(
+    bool obscureConfirmPassword,
+    Function isObscureConfirmPassword,
+    BuildContext context,
+    TextEditingController confirmPasswordController,
+    Function(String) onChanged,
+    String errorText, bool isSuccess) {
   return SizedBox(
-    height: 50,
+    height: errorText.isNotEmpty ? 70 : 50,
     width: double.infinity,
     child: TextField(
+      onChanged: onChanged,
+      controller: confirmPasswordController,
       obscureText: obscureConfirmPassword,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
           hintText: 'Confirm Password',
           hintStyle: TextStyle(
             color: Theme.of(context).colorScheme.onTertiary,
+          ),
+          errorText: errorText.isNotEmpty ? errorText : null,
+          errorStyle: const TextStyle(
+            color: Colors.red,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: isSuccess
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.tertiary,
+            ),
+            borderRadius: BorderRadius.circular(24),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: isSuccess
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSurface,
+            ),
+            borderRadius: BorderRadius.circular(24),
           ),
           suffixIcon: IconButton(
               onPressed: () {
@@ -216,70 +252,110 @@ SizedBox confirmPasswordWidget(bool obscureConfirmPassword,
   );
 }
 
-SizedBox dobWidget(BuildContext context, Function isDob, String dob) {
-  return SizedBox(
-    height: 50,
-    width: double.infinity,
-    child: GestureDetector(
-      onTap: () async {
-        final date = await showDatePickerDialog(
-          context: context,
-          initialDate: DateTime.now(),
-          minDate: DateTime(1950),
-          maxDate: DateTime.now(),
-          daysOfTheWeekTextStyle:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          leadingDateTextStyle:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          enabledCellsTextStyle:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          currentDateTextStyle:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          disabledCellsTextStyle:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        );
+Widget dobWidget(
+    BuildContext context, Function isDob, String dob, String errorText, bool isSuccess) {
+  return Column(
+    children: [
+      SizedBox(
+        height: 50,
+        width: double.infinity,
+        child: GestureDetector(
+          onTap: () async {
+            // Dismiss the keyboard to prevent the date picker from being hidden
+            FocusScope.of(context).unfocus();
+            await Future.delayed(const Duration(milliseconds: 200));
 
-        if (date != null) {
-          isDob(date.toString());
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.tertiary),
-          borderRadius: BorderRadius.circular(24),
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              dob.isNotEmpty ? dob.substring(0, 10) : 'Date of Birth',
-              style: TextStyle(
-                fontSize: 15,
-                color: dob.isEmpty
-                    ? Theme.of(context).colorScheme.onTertiary
-                    : Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.w500,
+            final date = await showDatePickerDialog(
+              context: context,
+              initialDate: DateTime.now(),
+              minDate: DateTime(1950),
+              maxDate: DateTime.now(),
+              daysOfTheWeekTextStyle:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              leadingDateTextStyle:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              enabledCellsTextStyle:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              currentDateTextStyle:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              disabledCellsTextStyle:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            );
+
+            if (date != null) {
+              isDob(date.toString());
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: isSuccess
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.tertiary),
+              borderRadius: BorderRadius.circular(24),
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  dob.isNotEmpty ? dob.substring(0, 10) : 'Date of Birth',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: dob.isEmpty
+                        ? Theme.of(context).colorScheme.onTertiary
+                        : Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
+      errorText.isNotEmpty
+          ? Text(
+              errorText,
+              style: const TextStyle(color: Colors.red, fontSize: 14),
+            )
+          : const SizedBox(),
+    ],
   );
 }
 
-SizedBox nameWidget(BuildContext context, String hint) {
+SizedBox nameWidget(BuildContext context, String hint, TextEditingController controller,
+    Function(String) onChanged, String errorText, bool isSuccess) {
   return SizedBox(
-    height: 50,
+    height: errorText.isNotEmpty ? 70 : 50,
     width: double.infinity,
     child: TextField(
+      controller: controller,
+      onChanged: onChanged,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0),
         hintText: hint,
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.onTertiary,
+        ),
+        errorText: errorText.isNotEmpty ? errorText : null,
+        errorStyle: const TextStyle(
+          color: Colors.red,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: isSuccess
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.tertiary,
+          ),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: isSuccess
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSurface,
+          ),
+          borderRadius: BorderRadius.circular(24),
         ),
       ),
     ),

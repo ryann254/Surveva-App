@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/models/userWIthToken.model.dart';
 import 'package:surveva_app/pages/auth/LoginPage.dart';
 import 'package:surveva_app/pages/auth/PersonalizationPage.dart';
+import 'package:surveva_app/utils/inputValidationUtils.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -18,14 +21,30 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _promotionalEmails = false;
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  bool isSignUpButtonEnabled = false;
+  String nameErrorMessage = '';
+  String dobErrorMessage = '';
+  String emailErrorMessage = '';
   String passwordErrorMessage = '';
+  String confirmPasswordErrorMessage = '';
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     gender = 'Male';
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
   }
 
   isObscurePassword() {
@@ -52,6 +71,53 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
+  void updateNameState(String name) {
+    setState(() {
+      nameErrorMessage = isNameValid(name) ? '' : 'Name must be at least 3 characters long';
+      isSignUpButtonEnabled = isNameValid(name) && isDobValid(dob) && isEmailValid(emailController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
+    });
+  }
+
+  void updateDobState(String dob) {
+    setState(() {
+      dobErrorMessage = isDobValid(dob) ? '' : 'Date of Birth is invalid';
+      isSignUpButtonEnabled = isDobValid(dob) && isNameValid(nameController.text) && isEmailValid(emailController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
+    });
+  }
+
+  void updateEmailState(String email) {
+    setState(() {
+      emailErrorMessage = getEmailErrorMessage(email);
+      isSignUpButtonEnabled = isEmailValid(email) && isDobValid(dob) && isNameValid(nameController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
+    });
+  }
+
+  void updatePasswordState(String password) {
+    setState(() {
+      passwordErrorMessage = getPasswordErrorMessage(password);
+      isSignUpButtonEnabled = isPasswordValid(password) && isDobValid(dob) && isNameValid(nameController.text) && isEmailValid(emailController.text) && isConfirmPasswordValid(confirmPasswordController.text, password) && _privacyPolicyAndTerms;
+    });
+  }
+
+  void updateConfirmPasswordState(String confirmPassword) {
+    setState(() {
+      confirmPasswordErrorMessage = isConfirmPasswordValid(confirmPassword, passwordController.text) ? '' : 'Passwords do not match';
+      isSignUpButtonEnabled = isConfirmPasswordValid(confirmPassword, passwordController.text) && isPasswordValid(passwordController.text) && isDobValid(dob) && isNameValid(nameController.text) && isEmailValid(emailController.text) && _privacyPolicyAndTerms;
+    });
+  }
+
+  Future<void> sendRegisterRequest() async {
+    // Dismiss the keyboard
+    FocusScope.of(context).unfocus();
+    setState(() {
+      emailErrorMessage = '';
+      passwordErrorMessage = '';
+      confirmPasswordErrorMessage = '';
+      isSignUpButtonEnabled = false;
+    });
+
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,14 +137,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 17),
-                    nameWidget(context, 'Name'),
+                    nameWidget(context, 'Name', nameController, updateNameState, nameErrorMessage, isNameValid(nameController.text)),
                     const SizedBox(height: 15),
-                    dobWidget(context, isDob, dob),
+                    dobWidget(context, isDob, dob, dobErrorMessage, isDobValid(dob)),
                     const SizedBox(height: 15),
                     emailWidget(
                         context: context,
                         emailController: emailController,
-                        onChanged: (String email) => {}),
+                        errorText: emailErrorMessage,
+                        onChanged: updateEmailState,
+                        isSuccess: isEmailValid(emailController.text)),
                     const SizedBox(height: 15),
                     passwordWidget(
                         obscurePassword,
@@ -86,10 +154,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         context,
                         passwordController,
                         passwordErrorMessage,
-                        (String password) => {}, false),
+                        updatePasswordState, isPasswordValid(passwordController.text)),
                     const SizedBox(height: 15),
                     confirmPasswordWidget(obscureConfirmPassword,
-                        isObscureConfirmPassword, context),
+                        isObscureConfirmPassword, context, confirmPasswordController, updateConfirmPasswordState, confirmPasswordErrorMessage, isConfirmPasswordValid(confirmPasswordController.text, passwordController.text)),
                     const SizedBox(height: 15),
                     genderWidget(gender, isGender, context, false),
                     const SizedBox(
@@ -102,6 +170,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             onChanged: (value) {
                               setState(() {
                                 _privacyPolicyAndTerms = value!;
+                                isSignUpButtonEnabled = isNameValid(nameController.text) && isDobValid(dob) && isEmailValid(emailController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
                               });
                             }),
                         Expanded(
@@ -152,18 +221,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     const SizedBox(height: 14),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const PersonalizationPage()));
-                      },
+                      onTap: () => isSignUpButtonEnabled ? () {} : null,
                       child: Container(
                           width: double.infinity,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
+                            color: isSignUpButtonEnabled ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.tertiary,
                             borderRadius: BorderRadius.circular(24),
                           ),
                           child: Center(
@@ -171,7 +234,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               'Continue',
                               style: TextStyle(
                                   color:
-                                      Theme.of(context).colorScheme.onPrimary,
+                                      isSignUpButtonEnabled ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onTertiary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),

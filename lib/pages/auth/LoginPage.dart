@@ -6,6 +6,7 @@ import 'package:surveva_app/functions/auth/login.dart';
 import 'package:surveva_app/pages/auth/ForgotPasswordPage.dart';
 import 'package:surveva_app/pages/auth/SignUpPage.dart';
 import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
+import 'package:surveva_app/utils/inputValidationUtils.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
 import 'package:surveva_app/models/error.model.dart';
 
@@ -25,63 +26,32 @@ class _LoginPageState extends State<LoginPage> {
   String passwordErrorMessage = '';
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
 
-  void _updateEmailState(String email) {
+  isObscurePassword() {
     setState(() {
-      emailErrorMessage = _getEmailErrorMessage(email);
-      isLoginButtonEnabled = _isEmailValid(email) &&
-          _isPasswordValid(passwordController.text);
+      obscurePassword = !obscurePassword;
     });
   }
 
-  void _updatePasswordState(String password) {
+    void updateEmailState(String email) {
     setState(() {
-      passwordErrorMessage = _getPasswordErrorMessage(password);
-      isLoginButtonEnabled = _isEmailValid(emailController.text) &&
+      emailErrorMessage = getEmailErrorMessage(email);
+      isLoginButtonEnabled = isEmailValid(email) &&
+          isPasswordValid(passwordController.text);
+    });
+  }
+
+  void updatePasswordState(String password) {
+    setState(() {
+      passwordErrorMessage = getPasswordErrorMessage(password);
+      isLoginButtonEnabled = isEmailValid(emailController.text) &&
           passwordErrorMessage.isEmpty;
     });
-  }
-
-  bool _isEmailValid(String email) {
-    if (email.isEmpty) return false;
-    return RegExp(
-      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    ).hasMatch(email);
-  }
-
-  bool _isPasswordValid(String password) {
-    return RegExp(
-      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$'
-    ).hasMatch(password);
-  }
-
-  String _getEmailErrorMessage(String email) {
-    if (email.isEmpty) return '';
-    if (!_isEmailValid(email)) return 'Invalid email';
-    return '';
-  }
-
-  String _getPasswordErrorMessage(String password) {
-    if (password.isEmpty) return '';
-    List<String> missingCriteria = [];
-    if (!password.contains(RegExp(r'[A-Z]'))) missingCriteria.add('an uppercase letter');
-    if (!password.contains(RegExp(r'[a-z]'))) missingCriteria.add('a lowercase letter');
-    if (!password.contains(RegExp(r'\d'))) missingCriteria.add('a number');
-    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) missingCriteria.add('a special character');
-    if (password.length < 8) missingCriteria.add('at least 8 characters');
-
-    if (missingCriteria.isEmpty) return '';
-    return 'Password must contain: ${missingCriteria.join(', ')}';
   }
 
   Future<void> sendLoginRequest() async {
@@ -107,15 +77,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  isObscurePassword() {
-    setState(() {
-      obscurePassword = !obscurePassword;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    log(_isEmailValid(emailController.text).toString());
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
@@ -143,8 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                           context: context, 
                           emailController: emailController,
                           errorText: emailErrorMessage,
-                          onChanged: _updateEmailState,
-                          isSuccess: _isEmailValid(emailController.text),
+                          onChanged: updateEmailState,
+                          isSuccess: isEmailValid(emailController.text),
                         ),
                         const SizedBox(height: 15),
                         passwordWidget(
@@ -153,8 +116,8 @@ class _LoginPageState extends State<LoginPage> {
                           context,
                           passwordController,
                           passwordErrorMessage,
-                          _updatePasswordState,
-                          _isPasswordValid(passwordController.text),
+                          updatePasswordState,
+                          isPasswordValid(passwordController.text),
                         ),
                         const SizedBox(height: 18),
                         GestureDetector(

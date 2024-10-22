@@ -13,6 +13,7 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   String dob = '';
   String gender = '';
+  String dobErrorMessage = '';
 
   isGender(String newGender) {
     setState(() {
@@ -34,7 +35,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         child: Column(
           children: [
             const SizedBox(height: 37,),
-            dobWidget(context, isDob, dob),
+            dobWidget(context, isDob, dob, dobErrorMessage, false),
             const SizedBox(height: 18,),
             emailWidget(context: context),
             const SizedBox(height: 18,),

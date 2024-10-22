@@ -16,6 +16,10 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   bool isProfileSaved = false;
+  String nameErrorMessage = '';
+  String usernameErrorMessage = '';
+  TextEditingController nameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   List<String> selectedCategories = [
     'Education and Academia',
     'Health and Fitness',
@@ -128,11 +132,13 @@ class _AccountPageState extends State<AccountPage> {
                 const SizedBox(
                   height: 12,
                 ),
-                nameWidget(context, 'Name'),
+                nameWidget(context, 'Name', nameController, (String name) => {},
+                    nameErrorMessage, false),
                 const SizedBox(
                   height: 18,
                 ),
-                nameWidget(context, 'Username'),
+                nameWidget(context, 'Username', usernameController,
+                    (String username) => {}, usernameErrorMessage, false),
                 const SizedBox(
                   height: 18,
                 ),

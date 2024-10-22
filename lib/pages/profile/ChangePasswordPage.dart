@@ -14,8 +14,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
   String passwordErrorMessage = '';
+  String confirmPasswordErrorMessage = '';
   TextEditingController passwordController = TextEditingController();
-
+  TextEditingController confirmPasswordController = TextEditingController();
+  
   isObscurePassword() {
     setState(() {
       obscurePassword = !obscurePassword;
@@ -56,7 +58,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   (String password) => {}, false),
               const SizedBox(height: 18),
               confirmPasswordWidget(
-                  obscureConfirmPassword, isObscureConfirmPassword, context),
+                  obscureConfirmPassword, isObscureConfirmPassword, context, confirmPasswordController, (String confirmPassword) => {}, confirmPasswordErrorMessage, false),
               const Spacer(),
               GestureDetector(
                 onTap: () {
