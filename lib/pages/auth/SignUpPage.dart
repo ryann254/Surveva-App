@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:surveva_app/models/userWIthToken.model.dart';
 import 'package:surveva_app/pages/auth/LoginPage.dart';
 import 'package:surveva_app/pages/auth/PersonalizationPage.dart';
 import 'package:surveva_app/utils/inputValidationUtils.dart';
 import 'package:surveva_app/widgets/authWidgets.dart';
+import 'package:surveva_app/providers/signUpProvider.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -36,6 +38,10 @@ class _SignUpPageState extends State<SignUpPage> {
   void initState() {
     super.initState();
     gender = 'Male';
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final signUpProvider = Provider.of<SignUpProvider>(context, listen: false);
+      signUpProvider.setGender(gender);
+    });
   }
 
   @override
@@ -63,12 +69,14 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       gender = newGender;
     });
+    Provider.of<SignUpProvider>(context, listen: false).setGender(newGender);
   }
 
   isDob(String newDob) {
     setState(() {
       dob = newDob;
     });
+    Provider.of<SignUpProvider>(context, listen: false).setDob(dob);
   }
 
   void updateNameState(String name) {
@@ -76,6 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
       nameErrorMessage = isNameValid(name) ? '' : 'Name must be at least 3 characters long';
       isSignUpButtonEnabled = isNameValid(name) && isDobValid(dob) && isEmailValid(emailController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
     });
+    Provider.of<SignUpProvider>(context, listen: false).setName(name);
   }
 
   void updateDobState(String dob) {
@@ -90,6 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
       emailErrorMessage = getEmailErrorMessage(email);
       isSignUpButtonEnabled = isEmailValid(email) && isDobValid(dob) && isNameValid(nameController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
     });
+    Provider.of<SignUpProvider>(context, listen: false).setEmail(email);
   }
 
   void updatePasswordState(String password) {
@@ -97,6 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
       passwordErrorMessage = getPasswordErrorMessage(password);
       isSignUpButtonEnabled = isPasswordValid(password) && isDobValid(dob) && isNameValid(nameController.text) && isEmailValid(emailController.text) && isConfirmPasswordValid(confirmPasswordController.text, password) && _privacyPolicyAndTerms;
     });
+    Provider.of<SignUpProvider>(context, listen: false).setPassword(password);
   }
 
   void updateConfirmPasswordState(String confirmPassword) {
@@ -106,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  Future<void> sendRegisterRequest() async {
+  Future<void> storeUserDetails() async {
     // Dismiss the keyboard
     FocusScope.of(context).unfocus();
     setState(() {
@@ -115,7 +126,7 @@ class _SignUpPageState extends State<SignUpPage> {
       confirmPasswordErrorMessage = '';
       isSignUpButtonEnabled = false;
     });
-
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const PersonalizationPage()));
   }
   
   @override
@@ -165,14 +176,20 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Row(
                       children: [
-                        Checkbox(
-                            value: _privacyPolicyAndTerms,
-                            onChanged: (value) {
-                              setState(() {
-                                _privacyPolicyAndTerms = value!;
-                                isSignUpButtonEnabled = isNameValid(nameController.text) && isDobValid(dob) && isEmailValid(emailController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
-                              });
-                            }),
+                        Consumer<SignUpProvider>(
+                          builder: (context, signUpProvider, child) {
+                            return Checkbox(
+                              value: signUpProvider.privacyPolicyAndTerms,
+                              onChanged: (value) {
+                                setState(() {
+                                  _privacyPolicyAndTerms = value!;
+                                  isSignUpButtonEnabled = isNameValid(nameController.text) && isDobValid(dob) && isEmailValid(emailController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
+                                });
+                                signUpProvider.setPrivacyPolicyAndTerms(value!);
+                              },
+                            );
+                          },
+                        ),
                         Expanded(
                           child: RichText(
                             text: TextSpan(
@@ -205,13 +222,19 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Row(
                       children: [
-                        Checkbox(
-                            value: _promotionalEmails,
-                            onChanged: (value) {
-                              setState(() {
-                                _promotionalEmails = value!;
-                              });
-                            }),
+                        Consumer<SignUpProvider>(
+                          builder: (context, signUpProvider, child) {
+                            return Checkbox(
+                              value: signUpProvider.promotionalEmails,
+                              onChanged: (value) {
+                                setState(() {
+                                  _promotionalEmails = value!;
+                                });
+                                signUpProvider.setPromotionalEmails(value!);
+                              },
+                            );
+                          },
+                        ),
                         const Expanded(
                             child: Text(
                           'I agree to receive informational and promotional materials',
@@ -221,7 +244,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     const SizedBox(height: 14),
                     GestureDetector(
-                      onTap: () => isSignUpButtonEnabled ? () {} : null,
+                      onTap: isSignUpButtonEnabled ? storeUserDetails : null,
                       child: Container(
                           width: double.infinity,
                           height: 50,

@@ -20,12 +20,6 @@ Future<UserWithToken> login({required String email, required String password}) a
     HttpHeaders.contentTypeHeader: 'application/json',
   };
   final Uri uri = Uri.http(baseUrl, '/api/v1/auth/login');
-  bool emailIsValid = RegExp(
-    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-  ).hasMatch(email);
-  if (!emailIsValid) {
-    throw Exception('Invalid email');
-  }
 
   body = jsonEncode({'email': email, 'password': password});
   final response = await http.post(uri, body: body, headers: headers);
