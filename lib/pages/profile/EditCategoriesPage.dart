@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:surveva_app/models/category.model.dart';
 import 'package:surveva_app/widgets/profileWidgets.dart';
 
 class EditCategoriesPage extends StatefulWidget {
@@ -10,21 +11,10 @@ class EditCategoriesPage extends StatefulWidget {
 }
 
 class _EditCategoriesPageState extends State<EditCategoriesPage> {
-  List<String> categories = [
-    'Education & Academia',
-    'Wellness & Lifestyle',
-    'Business & Economic',
-    'Science & Technology',
-    'Global Affairs & Politics',
-    'Society & Culture',
-    'Philosophy & Ethical Issues',
-    'Literature & Art',
-    'Personal Development & Hobbies',
-    'Media & Entertainment'
-  ];
-  List<String> selectedCategories = [];
+  List<Category> categories = [];
+  List<Category> selectedCategories = [];
 
-  addCategory(String category) {
+  addCategory(Category category) {
     if (selectedCategories.contains(category)) {
       setState(() {
         selectedCategories.remove(category);

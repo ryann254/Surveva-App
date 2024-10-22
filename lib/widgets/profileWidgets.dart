@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:surveva_app/models/category.model.dart';
 import 'package:surveva_app/pages/LaunchPage.dart';
 
 Dialog confirmProfileChangesModal(BuildContext context, Function() onDiscard) {
@@ -317,8 +318,8 @@ Widget searchWidget(BuildContext context) {
   );
 }
 
-Column categoryWidget(BuildContext context, List<String> selectedCategories,
-    Function(String) addCategory, List<String> categories) {
+Column categoryWidget(BuildContext context, List<Category> selectedCategories,
+    Function(Category) addCategory, List<Category> categories) {
   return Column(
     children: [
       const Text(
@@ -365,9 +366,9 @@ Column categoryWidget(BuildContext context, List<String> selectedCategories,
 
 Wrap selectedCategoriesWidget(
     BuildContext context,
-    List<String> selectedCategories,
-    Function(String) addCategory,
-    List<String> categories) {
+    List<Category> selectedCategories,
+    Function(Category) addCategory,
+    List<Category> categories) {
   return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -386,7 +387,7 @@ Wrap selectedCategoriesWidget(
                   : Theme.of(context).colorScheme.onPrimary,
             ),
             child: Text(
-              category,
+              category.name,
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,

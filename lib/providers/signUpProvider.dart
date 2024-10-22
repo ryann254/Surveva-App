@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:surveva_app/models/category.model.dart';
 
 class SignUpProvider extends ChangeNotifier {
   String _name = '';
@@ -8,6 +9,8 @@ class SignUpProvider extends ChangeNotifier {
   String _gender = '';
   bool _privacyPolicyAndTerms = false;
   bool _promotionalEmails = false;
+  List<Category> _categories = [];
+  String _language = '';
 
   // Getters
   String get name => _name;
@@ -17,6 +20,8 @@ class SignUpProvider extends ChangeNotifier {
   String get gender => _gender;
   bool get privacyPolicyAndTerms => _privacyPolicyAndTerms;
   bool get promotionalEmails => _promotionalEmails;
+  List<Category> get categories => _categories;
+  String get language => _language;
 
   // Setters
   void setName(String name) {
@@ -54,6 +59,16 @@ class SignUpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setCategories(List<Category> categories) {
+    _categories = categories;
+    notifyListeners();
+  }
+
+  void setLanguage(String language) {
+    _language = language;
+    notifyListeners();
+  }
+
   // Method to reset all values
   void reset() {
     _name = '';
@@ -63,6 +78,8 @@ class SignUpProvider extends ChangeNotifier {
     _gender = '';
     _privacyPolicyAndTerms = false;
     _promotionalEmails = false;
+    _categories = [];
+    _language = '';
     notifyListeners();
   }
 }

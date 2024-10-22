@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:developer';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:surveva_app/models/userWIthToken.model.dart';
 import 'package:surveva_app/pages/auth/LoginPage.dart';
 import 'package:surveva_app/pages/auth/PersonalizationPage.dart';
 import 'package:surveva_app/utils/inputValidationUtils.dart';
@@ -17,6 +15,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  late SignUpProvider _signUpProvider;
   String gender = '';
   String dob = '';
   bool _privacyPolicyAndTerms = false;
@@ -39,8 +38,8 @@ class _SignUpPageState extends State<SignUpPage> {
     super.initState();
     gender = 'Male';
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final signUpProvider = Provider.of<SignUpProvider>(context, listen: false);
-      signUpProvider.setGender(gender);
+      _signUpProvider = Provider.of<SignUpProvider>(context, listen: false);
+      _signUpProvider.setGender(gender);
     });
   }
 
@@ -69,14 +68,14 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       gender = newGender;
     });
-    Provider.of<SignUpProvider>(context, listen: false).setGender(newGender);
+    _signUpProvider.setGender(newGender);
   }
 
   isDob(String newDob) {
     setState(() {
       dob = newDob;
     });
-    Provider.of<SignUpProvider>(context, listen: false).setDob(dob);
+    _signUpProvider.setDob(dob);
   }
 
   void updateNameState(String name) {
@@ -84,7 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
       nameErrorMessage = isNameValid(name) ? '' : 'Name must be at least 3 characters long';
       isSignUpButtonEnabled = isNameValid(name) && isDobValid(dob) && isEmailValid(emailController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
     });
-    Provider.of<SignUpProvider>(context, listen: false).setName(name);
+    _signUpProvider.setName(name);
   }
 
   void updateDobState(String dob) {
@@ -99,7 +98,7 @@ class _SignUpPageState extends State<SignUpPage> {
       emailErrorMessage = getEmailErrorMessage(email);
       isSignUpButtonEnabled = isEmailValid(email) && isDobValid(dob) && isNameValid(nameController.text) && isPasswordValid(passwordController.text) && isConfirmPasswordValid(confirmPasswordController.text, passwordController.text) && _privacyPolicyAndTerms;
     });
-    Provider.of<SignUpProvider>(context, listen: false).setEmail(email);
+    _signUpProvider.setEmail(email);
   }
 
   void updatePasswordState(String password) {
@@ -107,7 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
       passwordErrorMessage = getPasswordErrorMessage(password);
       isSignUpButtonEnabled = isPasswordValid(password) && isDobValid(dob) && isNameValid(nameController.text) && isEmailValid(emailController.text) && isConfirmPasswordValid(confirmPasswordController.text, password) && _privacyPolicyAndTerms;
     });
-    Provider.of<SignUpProvider>(context, listen: false).setPassword(password);
+    _signUpProvider.setPassword(password);
   }
 
   void updateConfirmPasswordState(String confirmPassword) {

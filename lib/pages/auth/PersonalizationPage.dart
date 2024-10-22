@@ -1,7 +1,19 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:surveva_app/functions/auth/register.dart';
+import 'package:surveva_app/functions/category/getCategories.dart';
+import 'package:surveva_app/models/category.model.dart';
 import 'package:surveva_app/pages/discovery/DiscoveryPage.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:surveva_app/providers/signUpProvider.dart';
 import 'package:surveva_app/widgets/profileWidgets.dart';
+import 'package:surveva_app/models/error.model.dart';
+import 'package:surveva_app/config/globals.dart' as globals;
+import 'package:surveva_app/config/secrets.dart' as secrets;
 
 class PersonalizationPage extends StatefulWidget {
   const PersonalizationPage({super.key});
@@ -13,19 +25,8 @@ class PersonalizationPage extends StatefulWidget {
 class _PersonalizationPageState extends State<PersonalizationPage>
     with SingleTickerProviderStateMixin {
   // TODO: Get categories from API
-  List<String> categories = [
-    'Education & Academia',
-    'Wellness & Lifestyle',
-    'Business & Economic',
-    'Science & Technology',
-    'Global Affairs & Politics',
-    'Society & Culture',
-    'Philosophy & Ethical Issues',
-    'Literature & Art',
-    'Personal Development & Hobbies',
-    'Media & Entertainment'
-  ];
-  List<String> selectedCategories = [];
+  List<Category> categories = [];
+  List<Category> selectedCategories = [];
 
   // TODO: Get languages from API
   List<String> languages = [
@@ -73,12 +74,14 @@ class _PersonalizationPageState extends State<PersonalizationPage>
   ];
   List<String> selectedLanguages = [];
 
+  late SignUpProvider _signUpProvider;
   String? languageError;
-
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
   late ScrollController _scrollController;
   bool _showScrollIcon = true;
+  String country = '';
+  String continent = '';
 
   @override
   void initState() {
@@ -96,6 +99,11 @@ class _PersonalizationPageState extends State<PersonalizationPage>
     ));
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _signUpProvider = Provider.of<SignUpProvider>(context, listen: false);
+    });
+    fetchAndStoreCategories();
   }
 
   @override
@@ -120,7 +128,14 @@ class _PersonalizationPageState extends State<PersonalizationPage>
     }
   }
 
-  addCategory(String category) {
+  Future<void> fetchAndStoreCategories() async {
+    final categories = await getCategories();
+    setState(() {
+      this.categories = categories;
+    });
+  }
+
+  void addCategory(Category category) {
     if (selectedCategories.contains(category)) {
       setState(() {
         selectedCategories.remove(category);
@@ -132,6 +147,28 @@ class _PersonalizationPageState extends State<PersonalizationPage>
         });
       }
     }
+    _signUpProvider.setCategories(selectedCategories);
+  }
+
+  void addLanguage(String? value) {
+    if (value != null) {
+      setState(() {
+        if (selectedLanguages.contains(value)) {
+          selectedLanguages.remove(value);
+          languageError = null;
+        } else if (selectedLanguages.length < 3) {
+          selectedLanguages.add(value);
+          languageError = null;
+        } else {
+          languageError = "Max 3 languages. Tap below to remove one.";
+        }
+      });
+      _signUpProvider.setLanguage(selectedLanguages[0]);
+    }
+  }
+
+  bool isCustomizationComplete() {
+    return selectedCategories.length == 3 && selectedLanguages.isNotEmpty;
   }
 
   Future<void> askForNotificationPermission() async {
@@ -149,6 +186,76 @@ class _PersonalizationPageState extends State<PersonalizationPage>
     } catch (e) {
       print('Error requesting notification permission: $e');
       // Handle the error, maybe show a dialog to the user
+    }
+  }
+
+  Future<String?> getPublicIPAddress() async {
+    try {
+      final response = await http.get(Uri.parse('https://api.ipify.org'));
+      if (response.statusCode == 200) {
+        return response.body.trim();
+      }
+    } catch (e) {
+      log('Error getting public IP address: $e');
+    }
+    return null;
+  }
+
+  Future<void> getCountryAndContinent() async {
+    String? ipAddress = await getPublicIPAddress();
+    if (ipAddress != null) {
+      final Uri uri = Uri.https(globals.ipGeoLocationUrl, '/ipgeo', {'apiKey': secrets.ipGeoLocationApiKey, 'ip': ipAddress});
+      final response = await http.get(uri);
+
+      final data = jsonDecode(response.body);
+      country = data['country_name'];
+      continent = data['continent_name'];
+    } else {
+      log('Could not determine IP address');
+    }
+  }
+
+  String getPlatform() {
+    if (Platform.isAndroid) {
+      return 'Android';
+    } else if (Platform.isIOS) {
+      return 'iOS';
+    } else if (Platform.isWindows) {
+      return 'Windows';
+    } else if (Platform.isMacOS) {
+      return 'macOS';
+    } else if (Platform.isLinux) {
+      return 'Linux';
+    } else {
+      return 'Unknown';
+    }
+  }
+
+  Future<void> sendSignUpRequest() async {
+    await getCountryAndContinent();
+    try {
+      await register(
+          name: _signUpProvider.name,
+          dob: _signUpProvider.dob,
+          email: _signUpProvider.email,
+          password: _signUpProvider.password,
+          country: country,
+          continent: continent,
+          language: _signUpProvider.language,
+          gender: _signUpProvider.gender,
+          platform: getPlatform(),
+          // TODO: Map out the category ids
+          categories: []);
+      setState(() {
+        selectedCategories = [];
+        selectedLanguages = [];
+      });
+      log('Account created successfully');
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const DiscoveryPage()));
+    } catch (err) {
+      Error errorInstance = err as Error;
+      languageError = errorInstance.message;
     }
   }
 
@@ -189,7 +296,7 @@ class _PersonalizationPageState extends State<PersonalizationPage>
                       const SizedBox(
                         height: 24,
                       ),
-                      languagePreferencesWidget(),
+                      languagePreferencesWidget(addLanguage),
                       const SizedBox(
                         height: 12,
                       ),
@@ -230,18 +337,16 @@ class _PersonalizationPageState extends State<PersonalizationPage>
                       ),
                       GestureDetector(
                         onTap: () async {
-                          await askForNotificationPermission();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const DiscoveryPage()));
+                          if (isCustomizationComplete()) {
+                            await sendSignUpRequest();
+                            await askForNotificationPermission();
+                          }
                         },
                         child: Container(
                             width: double.infinity,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: selectedCategories.length == 3 &&
-                                      selectedLanguages.length == 3
+                              color: isCustomizationComplete()
                                   ? Theme.of(context).primaryColor
                                   : Theme.of(context).colorScheme.tertiary,
                               borderRadius: BorderRadius.circular(24),
@@ -250,8 +355,7 @@ class _PersonalizationPageState extends State<PersonalizationPage>
                               child: Text(
                                 'Continue',
                                 style: TextStyle(
-                                    color: selectedCategories.length == 3 &&
-                                            selectedLanguages.length == 3
+                                    color: isCustomizationComplete()
                                         ? Theme.of(context)
                                             .colorScheme
                                             .onPrimary
@@ -291,38 +395,25 @@ class _PersonalizationPageState extends State<PersonalizationPage>
     );
   }
 
-  DropdownButtonFormField<String> languagePreferencesWidget() {
+  DropdownButtonFormField<String> languagePreferencesWidget(
+      Function(String?) onChanged) {
     return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.zero,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          errorText: languageError,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        errorText: languageError,
-      ),
-      hint: const Text('Choose'),
-      value: null,
-      items: languages.map((String item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(item),
-        );
-      }).toList(),
-      onChanged: (String? value) {
-        if (value != null) {
-          setState(() {
-            if (selectedLanguages.contains(value)) {
-              selectedLanguages.remove(value);
-              languageError = null;
-            } else if (selectedLanguages.length < 3) {
-              selectedLanguages.add(value);
-              languageError = null;
-            } else {
-              languageError = "Max 3 languages. Tap below to remove one.";
-            }
-          });
-        }
-      },
-    );
+        hint: const Text('Choose'),
+        value: null,
+        items: languages.map((String item) {
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Text(item),
+          );
+        }).toList(),
+        onChanged: onChanged);
   }
 }
